@@ -20,5 +20,8 @@ private:
 
 private:
 	void setupTableView();
-	void AddItemsOneRow(int rowNo, QString name, int virtualAddr, int virtualSize, int rawSize, int sizeDelta, int characteristics);
+	void AddItemsOneRow(int rowNo, QString name, DWORD virtualAddr, DWORD virtualSize, DWORD rawSize, int sizeDelta, DWORD characteristics);
+
+private slots:
+	void closeView();
 };

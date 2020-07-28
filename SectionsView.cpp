@@ -7,6 +7,8 @@ SectionsView::SectionsView(PEImage* peImage, QWidget* parent) {
 	setupTableView();
 	// SectionsTable是tableVertLayout的child，所以这样可以使得table填充满整个窗口
 	this->setLayout(ui.tableVertLayout);
+	ui.SectionsTable->horizontalHeader()->setStretchLastSection(true);
+	ui.SectionsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 }
 
 SectionsView::~SectionsView() {
@@ -32,22 +34,25 @@ void SectionsView::setupTableView() {
 
 
 	DWORD numSections = peImageLocal->sectionCount;
+	char namebuffer[9] = { 0 };
 	table->setRowCount(numSections);
 	for (int i = 0; i < numSections; i++) {
 		PIMAGE_SECTION_HEADER secHeader = peImageLocal->SectionHeadersArr[i];
-		QString name((char*)secHeader->Name);
-		int virtualAddr = secHeader->VirtualAddress;
-		int virtualSize = secHeader->Misc.VirtualSize;
-		int rawSize = secHeader->Misc.PhysicalAddress;
+		memset(namebuffer, 0, 8);
+		memcpy(namebuffer, (char*)secHeader->Name, 8);
+		QString name(namebuffer);
+		DWORD virtualAddr = secHeader->VirtualAddress;
+		DWORD virtualSize = secHeader->Misc.VirtualSize;
+		DWORD rawSize = secHeader->Misc.PhysicalAddress;
 		int sizeDelta = virtualAddr - rawSize;
-		int characteristics = secHeader->Characteristics;
+		DWORD characteristics = secHeader->Characteristics;
 		AddItemsOneRow(i, name, virtualAddr, virtualSize, rawSize, sizeDelta, characteristics);
 	}
 
 
 }
 
-void SectionsView::AddItemsOneRow(int rowNo, QString name, int virtualAddr, int virtualSize, int rawSize, int sizeDelta, int characteristics) {
+void SectionsView::AddItemsOneRow(int rowNo, QString name, DWORD virtualAddr, DWORD virtualSize, DWORD rawSize, int sizeDelta, DWORD characteristics) {
 	QTableWidget* table = ui.SectionsTable;
 
 	int col = 0;
@@ -55,8 +60,17 @@ void SectionsView::AddItemsOneRow(int rowNo, QString name, int virtualAddr, int 
 	QString tmp;
 	tmp = tmp.sprintf("%08X", virtualAddr);
 	table->setItem(rowNo, col++, new QTableWidgetItem(tmp));
-	table->setItem(rowNo, col++, new QTableWidgetItem(QString::number(virtualSize, 16)));
-	table->setItem(rowNo, col++, new QTableWidgetItem(QString::number(rawSize, 16)));
-	table->setItem(rowNo, col++, new QTableWidgetItem(QString::number(sizeDelta, 16)));
-	table->setItem(rowNo, col++, new QTableWidgetItem(QString::number(characteristics, 2)));
+	table->setItem(rowNo, col++, new QTableWidgetItem(tmp.sprintf("%08X", virtualSize)));
+	table->setItem(rowNo, col++, new QTableWidgetItem(tmp.sprintf("%08X", rawSize)));
+	table->setItem(rowNo, col++, new QTableWidgetItem(tmp.sprintf("%8X", sizeDelta)));
+	QString chs = QString::number(characteristics, 2);
+	int zeroNeeded = 32 - chs.count();
+	char zeros[32] = { 0 };
+	memset(zeros, '0', zeroNeeded);
+	chs = QString(zeros) + chs;
+	table->setItem(rowNo, col++, new QTableWidgetItem(chs));
+}
+
+void SectionsView::closeView() {
+	close();
 }
