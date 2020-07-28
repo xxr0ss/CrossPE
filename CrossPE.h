@@ -19,7 +19,7 @@ signals:
 public:
     PEImage *peImage;
     QString peFileName;
-    QList<QWidget> widgetsToBeReady;
+    QList<QWidget> widgetsToBeEnabled;
     
     CrossPE(QWidget *parent = Q_NULLPTR);
     ~CrossPE();

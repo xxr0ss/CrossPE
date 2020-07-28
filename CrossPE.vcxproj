@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PEImage.cpp" />
     <QtRcc Include="CrossPE.qrc" />
     <QtUic Include="CrossPE.ui" />
     <QtMoc Include="CrossPE.h" />
