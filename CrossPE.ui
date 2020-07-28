@@ -19,7 +19,10 @@
    <string>CrossPE</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="btnViewSections">
+   <widget class="QPushButton" name="pushButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -112,7 +115,7 @@
    <sender>actionOpen</sender>
    <signal>triggered()</signal>
    <receiver>CrossPEClass</receiver>
-   <slot>on_open_file_triggered()</slot>
+   <slot>fileOpenFromMemuBar()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -126,6 +129,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>on_open_file_triggered()</slot>
+  <slot>fileOpenFromMemuBar()</slot>
  </slots>
 </ui>

@@ -68,7 +68,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -94,6 +94,7 @@
     <QtUic Include="SectionsView.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PEImage.h" />
     <ClInclude Include="SectionsView.h" />
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h" />
     <ClInclude Include="x64\Debug\uic\ui_SectionsView.h" />

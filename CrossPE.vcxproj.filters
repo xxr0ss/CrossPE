@@ -52,6 +52,9 @@
     <ClInclude Include="SectionsView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PEImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SectionsView.ui">

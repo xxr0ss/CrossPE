@@ -6,21 +6,30 @@
 #include <qfiledevice.h>
 #include <qfile.h>
 #include <qstring.h>
-
+#include "PEImage.h"
 
 
 class CrossPE : public QMainWindow
 {
     Q_OBJECT
 
+signals:
+    void fileNameIsReady();
+
 public:
+    PEImage *peImage;
     QString peFileName;
+    QList<QWidget> widgetsToBeReady;
+    
     CrossPE(QWidget *parent = Q_NULLPTR);
+    ~CrossPE();
+    void openPESectionsView();
 
 private:
     Ui::CrossPEClass ui;
 
 private slots:
-    void on_open_file_triggered();
-    void on_btnViewSections_clicked();
+    void dealWithArgsFile();
+    void fileOpenFromMemuBar();
+    void peImageLoad();
 };
