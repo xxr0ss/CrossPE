@@ -52,7 +52,7 @@ PBYTE PEImage::loadPEImage(HANDLE hFile) {
 			(PBYTE)OptHeader64 + sizeof(IMAGE_OPTIONAL_HEADER64)
 			);
 
-		WORD sectionCount = FileHeader->NumberOfSections;
+		sectionCount = FileHeader->NumberOfSections;
 		SectionHeadersArr = (PIMAGE_SECTION_HEADER*)malloc(sizeof(PIMAGE_SECTION_HEADER*) * sectionCount);
 		for (int i = 0; i < sectionCount; i++) {
 			SectionHeadersArr[i] = sectionHeader + i;

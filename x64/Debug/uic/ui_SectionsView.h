@@ -11,37 +11,56 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Form
+class Ui_SectionsViewClass
 {
 public:
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *tableVertLayout;
+    QTableWidget *SectionsTable;
 
-    void setupUi(QWidget *Form)
+    void setupUi(QWidget *SectionsViewClass)
     {
-        if (Form->objectName().isEmpty())
-            Form->setObjectName(QString::fromUtf8("Form"));
-        Form->resize(643, 300);
+        if (SectionsViewClass->objectName().isEmpty())
+            SectionsViewClass->setObjectName(QString::fromUtf8("SectionsViewClass"));
+        SectionsViewClass->resize(643, 300);
         QFont font;
         font.setFamily(QString::fromUtf8("Microsoft YaHei UI"));
-        Form->setFont(font);
+        SectionsViewClass->setFont(font);
+        verticalLayoutWidget = new QWidget(SectionsViewClass);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(10, 10, 621, 281));
+        tableVertLayout = new QVBoxLayout(verticalLayoutWidget);
+        tableVertLayout->setObjectName(QString::fromUtf8("tableVertLayout"));
+        tableVertLayout->setContentsMargins(0, 0, 0, 0);
+        SectionsTable = new QTableWidget(verticalLayoutWidget);
+        SectionsTable->setObjectName(QString::fromUtf8("SectionsTable"));
+        SectionsTable->horizontalHeader()->setCascadingSectionResizes(false);
+        SectionsTable->verticalHeader()->setCascadingSectionResizes(false);
 
-        retranslateUi(Form);
+        tableVertLayout->addWidget(SectionsTable);
 
-        QMetaObject::connectSlotsByName(Form);
+
+        retranslateUi(SectionsViewClass);
+
+        QMetaObject::connectSlotsByName(SectionsViewClass);
     } // setupUi
 
-    void retranslateUi(QWidget *Form)
+    void retranslateUi(QWidget *SectionsViewClass)
     {
-        Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
+        SectionsViewClass->setWindowTitle(QCoreApplication::translate("SectionsViewClass", "PE Sections", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class Form: public Ui_Form {};
+    class SectionsViewClass: public Ui_SectionsViewClass {};
 } // namespace Ui
 
 QT_END_NAMESPACE

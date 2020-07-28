@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="PEImage.cpp" />
+    <ClCompile Include="SectionsView.cpp" />
     <QtRcc Include="CrossPE.qrc" />
     <QtUic Include="CrossPE.ui" />
     <QtMoc Include="CrossPE.h" />
@@ -96,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PEImage.h" />
-    <ClInclude Include="SectionsView.h" />
+    <QtMoc Include="SectionsView.h" />
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h" />
     <ClInclude Include="x64\Debug\uic\ui_SectionsView.h" />
   </ItemGroup>

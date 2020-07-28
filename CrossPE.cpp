@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <qdebug.h>
 #include <qbytearray.h>
+#include <qmessagebox.h>
 
 #ifdef WIN32
 #pragma execution_character_set("utf-8")
@@ -12,9 +13,11 @@ CrossPE::CrossPE(QWidget *parent)
 {
     ui.setupUi(this);
     peImage = new PEImage();
+    sectionsView = NULL;
 
     // connections
     connect(this, SIGNAL(fileNameIsReady()), this, SLOT(peImageLoad()));
+    connect(ui.btnOpenSectionView, SIGNAL(clicked()), this, SLOT(openPESectionsView()));
 }
 
 CrossPE::~CrossPE() {
@@ -61,8 +64,14 @@ void CrossPE::peImageLoad() {
 
 void CrossPE::openPESectionsView() {
     if (peFileName.isEmpty()) {
-        MessageBox(NULL, L"No file opened!", L"Error", MB_OK);
+        //MessageBox(NULL, L"No file opened!", L"Error", MB_OK);
+        QMessageBox::information(this, "Error", "No file opened!", MB_OK);
         return;
     }
+
+    sectionsView = new SectionsView(peImage);
+    sectionsView->setAttribute(Qt::WA_DeleteOnClose);
+    sectionsView->setWindowFlag(Qt::Window, true);
+    sectionsView->show();
 }
 

@@ -31,7 +31,7 @@ public:
     QAction *actionSave;
     QAction *actionSave_As;
     QWidget *centralWidget;
-    QPushButton *pushButton;
+    QPushButton *btnOpenSectionView;
     QLineEdit *lineEditFileName;
     QLabel *label;
     QMenuBar *menuBar;
@@ -55,10 +55,10 @@ public:
         actionSave_As->setObjectName(QString::fromUtf8("actionSave_As"));
         centralWidget = new QWidget(CrossPEClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setEnabled(true);
-        pushButton->setGeometry(QRect(30, 80, 93, 28));
+        btnOpenSectionView = new QPushButton(centralWidget);
+        btnOpenSectionView->setObjectName(QString::fromUtf8("btnOpenSectionView"));
+        btnOpenSectionView->setEnabled(true);
+        btnOpenSectionView->setGeometry(QRect(40, 70, 93, 28));
         lineEditFileName = new QLineEdit(centralWidget);
         lineEditFileName->setObjectName(QString::fromUtf8("lineEditFileName"));
         lineEditFileName->setGeometry(QRect(100, 30, 381, 21));
@@ -97,7 +97,7 @@ public:
         actionOpen->setText(QCoreApplication::translate("CrossPEClass", "Open", nullptr));
         actionSave->setText(QCoreApplication::translate("CrossPEClass", "Save", nullptr));
         actionSave_As->setText(QCoreApplication::translate("CrossPEClass", "Save As", nullptr));
-        pushButton->setText(QCoreApplication::translate("CrossPEClass", "Sections", nullptr));
+        btnOpenSectionView->setText(QCoreApplication::translate("CrossPEClass", "Sections", nullptr));
         label->setText(QCoreApplication::translate("CrossPEClass", "PE file", nullptr));
         menuFile->setTitle(QCoreApplication::translate("CrossPEClass", "File", nullptr));
     } // retranslateUi

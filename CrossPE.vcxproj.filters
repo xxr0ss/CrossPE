@@ -44,15 +44,15 @@
     <ClCompile Include="PEImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SectionsView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="x64\Debug\uic\ui_SectionsView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SectionsView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PEImage.h">
@@ -63,5 +63,10 @@
     <QtUic Include="SectionsView.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="SectionsView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include <qfile.h>
 #include <qstring.h>
 #include "PEImage.h"
+#include "SectionsView.h"
 
 
 class CrossPE : public QMainWindow
@@ -20,10 +21,10 @@ public:
     PEImage *peImage;
     QString peFileName;
     QList<QWidget> widgetsToBeEnabled;
+    SectionsView* sectionsView;
     
     CrossPE(QWidget *parent = Q_NULLPTR);
     ~CrossPE();
-    void openPESectionsView();
 
 private:
     Ui::CrossPEClass ui;
@@ -31,5 +32,6 @@ private:
 private slots:
     void dealWithArgsFile();
     void fileOpenFromMemuBar();
+    void openPESectionsView();
     void peImageLoad();
 };
