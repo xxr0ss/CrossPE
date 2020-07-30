@@ -14,6 +14,7 @@ CrossPE::CrossPE(QWidget *parent)
     ui.setupUi(this);
     peImage = new PEImage();
     sectionsView = NULL;
+    this->setAcceptDrops(true);
 
     // connections
     connect(this, SIGNAL(fileNameIsReady()), this, SLOT(peImageLoad()));
@@ -22,9 +23,9 @@ CrossPE::CrossPE(QWidget *parent)
 
 CrossPE::~CrossPE() {
     // ÊÍ·Å¾µÏñ
-    if(peImage != nullptr){
+    if(peImage != NULL){
         delete peImage;
-        peImage = nullptr;
+        peImage = NULL;
     }
 }
 
@@ -53,7 +54,25 @@ void CrossPE::fileOpenFromMemuBar() {
     emit fileNameIsReady();
 }
 
+void CrossPE::dragEnterEvent(QDragEnterEvent* event) {
+    qDebug() << "dragEnterEvent";
+    if (event->mimeData()->hasFormat("text/uri-list"))
+        event->acceptProposedAction();
+}
 
+void CrossPE::dropEvent(QDropEvent* event) {
+    
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
+        return;
+    if (urls.count() > 1) {
+        QMessageBox::information(this, "Unsupported operation", "One file at a time!", QMessageBox::Ok);
+    }
+    QString file_name = urls.last().toLocalFile();
+    ui.lineEditFileName->setText(file_name);
+    peFileName = file_name;
+    emit fileNameIsReady();
+}
 
 void CrossPE::peImageLoad() {
     QByteArray ba = peFileName.toLatin1();

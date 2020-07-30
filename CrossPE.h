@@ -8,6 +8,9 @@
 #include <qstring.h>
 #include "PEImage.h"
 #include "SectionsView.h"
+#include <qdrag.h>
+#include <qevent.h>
+#include <qmimedata.h>
 
 
 class CrossPE : public QMainWindow
@@ -25,6 +28,10 @@ public:
     
     CrossPE(QWidget *parent = Q_NULLPTR);
     ~CrossPE();
+
+protected:
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
 
 private:
     Ui::CrossPEClass ui;
