@@ -19,6 +19,7 @@ class CrossPE : public QMainWindow
 
 signals:
     void fileNameIsReady();
+    void imageLoaded();
 
 public:
     PEImage *peImage;
@@ -41,4 +42,5 @@ private slots:
     void fileOpenFromMemuBar();
     void openPESectionsView();
     void peImageLoad();
+    void afterImageLoaded();
 };

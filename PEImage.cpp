@@ -2,10 +2,8 @@
 
 PBYTE PEImage::loadPEImage(HANDLE hFile) {
 	hPEFile = hFile;
-	BOOL is32bitPE = FALSE;
 	BOOL bResult = FALSE;
 	DWORD IoCnt;
-	DWORD fileSize;
 	DWORD readOffset = 0;
 
 	do {
@@ -49,6 +47,8 @@ PBYTE PEImage::loadPEImage(HANDLE hFile) {
 			DataDirArr[i] = is32bitPE ?
 				&OptHeader32->DataDirectory[i] : &OptHeader64->DataDirectory[i];
 		}
+		ImageBase = is32bitPE ? OptHeader32->ImageBase : OptHeader64->ImageBase;
+		EntryPoint = is32bitPE ? OptHeader32->AddressOfEntryPoint : OptHeader64->AddressOfEntryPoint;
 
 		PIMAGE_SECTION_HEADER sectionHeader = (PIMAGE_SECTION_HEADER)(
 			is32bitPE ?

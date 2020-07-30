@@ -12,6 +12,7 @@ public:
 	BOOL closeFileAfterLoading = TRUE;
 	//DWORD dwPageSize;
 	HANDLE hPEFile;
+	DWORD fileSize;
 	HANDLE hProc;
 	WORD sectionCount;
 	PBYTE peImageData;
