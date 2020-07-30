@@ -9,6 +9,7 @@
 class PEImage {
 public:
 	BOOL is32bitPE;
+	BOOL closeFileAfterLoading = TRUE;
 	//DWORD dwPageSize;
 	HANDLE hPEFile;
 	HANDLE hProc;

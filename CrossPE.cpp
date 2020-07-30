@@ -12,7 +12,7 @@ CrossPE::CrossPE(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-    peImage = new PEImage();
+    peImage = NULL;
     sectionsView = NULL;
     this->setAcceptDrops(true);
 
@@ -61,7 +61,6 @@ void CrossPE::dragEnterEvent(QDragEnterEvent* event) {
 }
 
 void CrossPE::dropEvent(QDropEvent* event) {
-    
     QList<QUrl> urls = event->mimeData()->urls();
     if (urls.isEmpty())
         return;
@@ -69,6 +68,11 @@ void CrossPE::dropEvent(QDropEvent* event) {
         QMessageBox::information(this, "Unsupported operation", "One file at a time!", QMessageBox::Ok);
     }
     QString file_name = urls.last().toLocalFile();
+    QString oldFileName = ui.lineEditFileName->text();
+    if (!file_name.compare(oldFileName)) {
+        QMessageBox::information(this, "Try again", "You opened the same file", QMessageBox::Ok);
+        return;
+    }
     ui.lineEditFileName->setText(file_name);
     peFileName = file_name;
     emit fileNameIsReady();
@@ -76,6 +80,10 @@ void CrossPE::dropEvent(QDropEvent* event) {
 
 void CrossPE::peImageLoad() {
     QByteArray ba = peFileName.toLatin1();
+    if (peImage != NULL) {
+        delete peImage;
+    }
+    peImage = new PEImage();
     peImage->loadPEImage(ba.data());
 }
 

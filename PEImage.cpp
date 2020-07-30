@@ -16,6 +16,10 @@ PBYTE PEImage::loadPEImage(HANDLE hFile) {
 
 		peImageData = (PBYTE)malloc(fileSize);
 		bResult = ReadFile(hPEFile, peImageData, fileSize, &IoCnt, NULL);
+		if (closeFileAfterLoading) {
+			CloseHandle(hFile);
+			hFile = INVALID_HANDLE_VALUE;
+		}
 		if (!bResult)
 			break;
 
