@@ -86,6 +86,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ImportView.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="PEImage.cpp" />
     <ClCompile Include="SectionsView.cpp" />
     <QtRcc Include="CrossPE.qrc" />
@@ -93,12 +99,15 @@
     <QtMoc Include="CrossPE.h" />
     <ClCompile Include="CrossPE.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="ImportView.ui" />
     <QtUic Include="SectionsView.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImportView.h" />
     <ClInclude Include="PEImage.h" />
     <QtMoc Include="SectionsView.h" />
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h" />
+    <ClInclude Include="x64\Debug\uic\ui_ImportView.h" />
     <ClInclude Include="x64\Debug\uic\ui_SectionsView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

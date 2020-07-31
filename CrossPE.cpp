@@ -42,7 +42,7 @@ void CrossPE::dealWithArgsFile() {
     emit fileNameIsReady();
 }
 
-void CrossPE::fileOpenFromMemuBar() {
+void CrossPE::fileOpenWithDialog() {
     // 通过菜单打开一个文件
     QString curPath = QDir::currentPath();
     QString dlgTitle = "打开PE文件";
@@ -101,22 +101,31 @@ void CrossPE::afterImageLoaded() {
     QString arch;
     QString baseAddr;
     QString entryAddr;
+    WORD subsys;
+    QString subSystem;
 
     QString filesize;
-    filesize.sprintf("%X", peImage->fileSize);
+    filesize.sprintf("%X bytes", peImage->fileSize);
 
     if (peImage->is32bitPE) {
         arch = "x86";
         baseAddr.sprintf("%08X", peImage->ImageBase);
         entryAddr.sprintf("%08X", peImage->EntryPoint);
+        subsys = peImage->OptHeader32->Subsystem;
     }
     else {
         arch = "x86-64";
         baseAddr.sprintf("%016X", peImage->ImageBase);
         entryAddr.sprintf("%016X", peImage->EntryPoint);
+        subsys = peImage->OptHeader64->Subsystem;
     }
+    char* subsys_vals[] = { "Unknown", "Native", "Windows GUI", "Windows CUI", "Other"};
+    subSystem = (subsys < 4) ? subsys_vals[subsys] : subsys_vals[4];
+
     QString info;
-    info = arch + '\t' + "File size: " + filesize + "\n" + "Base address: " + baseAddr + '\n' + "Entry: " + entryAddr;
+    info = "Arch: " + arch + "   " + "File size: " + filesize + "\n" + 
+        "Subsystem: " + subSystem + '\n' +
+        "Base address: " + baseAddr + '\n' + "Entry: " + entryAddr;
     te_basicInfo->setEnabled(true);
     te_basicInfo->setText(info);
 }

@@ -22,6 +22,12 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Header Files\subViews">
+      <UniqueIdentifier>{e557862b-e2b7-4a86-9b80-82afe56284ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\subViews">
+      <UniqueIdentifier>{89896a6c-e361-48d6-9779-f2256b7baeb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="CrossPE.qrc">
@@ -45,28 +51,40 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SectionsView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\subViews</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportView.cpp">
+      <Filter>Source Files\subViews</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="x64\Debug\uic\ui_SectionsView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PEImage.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_ImportView.h">
+      <Filter>Header Files\subViews</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_SectionsView.h">
+      <Filter>Header Files\subViews</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportView.h">
+      <Filter>Header Files\subViews</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SectionsView.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+    <QtUic Include="ImportView.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SectionsView.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\subViews</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

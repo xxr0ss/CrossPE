@@ -65,7 +65,7 @@ public:
         btnOpenSectionView = new QPushButton(centralWidget);
         btnOpenSectionView->setObjectName(QString::fromUtf8("btnOpenSectionView"));
         btnOpenSectionView->setEnabled(false);
-        btnOpenSectionView->setGeometry(QRect(20, 180, 93, 28));
+        btnOpenSectionView->setGeometry(QRect(20, 190, 93, 28));
         lineEditFileName = new QLineEdit(centralWidget);
         lineEditFileName->setObjectName(QString::fromUtf8("lineEditFileName"));
         lineEditFileName->setGeometry(QRect(120, 10, 401, 21));
@@ -78,17 +78,17 @@ public:
         toolButton->setGeometry(QRect(530, 10, 47, 21));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(20, 140, 93, 28));
+        pushButton->setGeometry(QRect(20, 150, 93, 28));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(120, 140, 93, 28));
+        pushButton_2->setGeometry(QRect(120, 150, 93, 28));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(20, 40, 72, 15));
         basicPEinfo = new QTextEdit(centralWidget);
         basicPEinfo->setObjectName(QString::fromUtf8("basicPEinfo"));
         basicPEinfo->setEnabled(false);
-        basicPEinfo->setGeometry(QRect(120, 40, 401, 81));
+        basicPEinfo->setGeometry(QRect(120, 40, 401, 91));
         QFont font1;
         font1.setFamily(QString::fromUtf8("Consolas"));
         font1.setPointSize(9);
@@ -115,7 +115,8 @@ public:
         menuFile->addAction(actionSave_As);
 
         retranslateUi(CrossPEClass);
-        QObject::connect(actionOpen, SIGNAL(triggered()), CrossPEClass, SLOT(fileOpenFromMemuBar()));
+        QObject::connect(actionOpen, SIGNAL(triggered()), CrossPEClass, SLOT(fileOpenWithDialog()));
+        QObject::connect(toolButton, SIGNAL(clicked()), CrossPEClass, SLOT(fileOpenWithDialog()));
 
         QMetaObject::connectSlotsByName(CrossPEClass);
     } // setupUi

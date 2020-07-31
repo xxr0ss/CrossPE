@@ -39,7 +39,7 @@ private:
 
 private slots:
     void dealWithArgsFile();
-    void fileOpenFromMemuBar();
+    void fileOpenWithDialog();
     void openPESectionsView();
     void peImageLoad();
     void afterImageLoaded();

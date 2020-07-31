@@ -18,7 +18,6 @@ public:
 private:
 	Ui::SectionsViewClass ui;
 
-private:
 	void setupTableView();
 	void AddItemsOneRow(int rowNo, QString name, DWORD virtualAddr, DWORD virtualSize, DWORD rawSize, int sizeDelta, DWORD characteristics);
 
