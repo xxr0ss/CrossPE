@@ -129,5 +129,6 @@
  </connections>
  <slots>
   <slot>closeView()</slot>
+  <slot>click_debug()</slot>
  </slots>
 </ui>
