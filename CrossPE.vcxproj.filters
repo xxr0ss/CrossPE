@@ -70,9 +70,6 @@
     <ClInclude Include="x64\Debug\uic\ui_SectionsView.h">
       <Filter>Header Files\subViews</Filter>
     </ClInclude>
-    <ClInclude Include="ImportView.h">
-      <Filter>Header Files\subViews</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SectionsView.ui">
@@ -84,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SectionsView.h">
+      <Filter>Header Files\subViews</Filter>
+    </QtMoc>
+    <QtMoc Include="ImportView.h">
       <Filter>Header Files\subViews</Filter>
     </QtMoc>
   </ItemGroup>

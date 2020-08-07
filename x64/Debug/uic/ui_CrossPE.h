@@ -37,7 +37,7 @@ public:
     QLineEdit *lineEditFileName;
     QLabel *label;
     QToolButton *toolButton;
-    QPushButton *pushButton;
+    QPushButton *btnOpenImportTable;
     QPushButton *pushButton_2;
     QLabel *label_2;
     QTextEdit *basicPEinfo;
@@ -76,11 +76,13 @@ public:
         toolButton = new QToolButton(centralWidget);
         toolButton->setObjectName(QString::fromUtf8("toolButton"));
         toolButton->setGeometry(QRect(530, 10, 47, 21));
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(20, 150, 93, 28));
+        btnOpenImportTable = new QPushButton(centralWidget);
+        btnOpenImportTable->setObjectName(QString::fromUtf8("btnOpenImportTable"));
+        btnOpenImportTable->setEnabled(false);
+        btnOpenImportTable->setGeometry(QRect(20, 150, 93, 28));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        pushButton_2->setEnabled(false);
         pushButton_2->setGeometry(QRect(120, 150, 93, 28));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -130,7 +132,7 @@ public:
         btnOpenSectionView->setText(QCoreApplication::translate("CrossPEClass", "Sections", nullptr));
         label->setText(QCoreApplication::translate("CrossPEClass", "PE file:", nullptr));
         toolButton->setText(QCoreApplication::translate("CrossPEClass", "...", nullptr));
-        pushButton->setText(QCoreApplication::translate("CrossPEClass", "Import", nullptr));
+        btnOpenImportTable->setText(QCoreApplication::translate("CrossPEClass", "Import", nullptr));
         pushButton_2->setText(QCoreApplication::translate("CrossPEClass", "Export", nullptr));
         label_2->setText(QCoreApplication::translate("CrossPEClass", "Basic Info:", nullptr));
         menuFile->setTitle(QCoreApplication::translate("CrossPEClass", "File", nullptr));

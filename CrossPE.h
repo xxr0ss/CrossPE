@@ -8,6 +8,7 @@
 #include <qstring.h>
 #include "PEImage.h"
 #include "SectionsView.h"
+#include "ImportView.h"
 #include <qdrag.h>
 #include <qevent.h>
 #include <qmimedata.h>
@@ -26,6 +27,8 @@ public:
     QString peFileName;
     QList<QWidget> widgetsToBeEnabled;
     SectionsView* sectionsView;
+    ImportView* importView;
+
     
     CrossPE(QWidget *parent = Q_NULLPTR);
     ~CrossPE();
@@ -41,6 +44,7 @@ private slots:
     void dealWithArgsFile();
     void fileOpenWithDialog();
     void openPESectionsView();
+    void openImportTableView();
     void peImageLoad();
     void afterImageLoaded();
 };

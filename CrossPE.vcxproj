@@ -68,7 +68,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -78,7 +78,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
     <QtUic Include="SectionsView.ui" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImportView.h" />
+    <QtMoc Include="ImportView.h" />
     <ClInclude Include="PEImage.h" />
     <QtMoc Include="SectionsView.h" />
     <ClInclude Include="x64\Debug\uic\ui_CrossPE.h" />

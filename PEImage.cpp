@@ -88,8 +88,52 @@ BOOL PEImage::checkIs32bit(PBYTE fileBytes) {
 
 BOOL PEImage::VerifyImage(PBYTE imgData) {
 	// TODO: write verification logics
+	// 简单的写个了return true，还没想好要校验些啥内容
 	return true;
 }
+
+PIMAGE_SECTION_HEADER PEImage::LocationSectionByRVA(int VirtualAddr) {
+	PIMAGE_SECTION_HEADER tmpSec = SectionHeadersArr[0];
+	for (int i = 0; i < sectionCount; i++) {
+		if (tmpSec->VirtualAddress <= VirtualAddr &&
+			VirtualAddr < (tmpSec->VirtualAddress + tmpSec->Misc.VirtualSize))
+		{
+			return tmpSec;
+		}
+		tmpSec++;
+	}
+	return NULL;
+}
+
+
+int PEImage::getImportNum() {
+	// 根据导入表项来计算的，所以如果修改了的话，获得的总是新的值，还会更新iidImportCnt
+	int size = iidImport->Size;
+	iidImportCnt = (size / 0x14) - 1;
+	return iidImportCnt;
+}
+
+DWORD PEImage::Rva2Raw(DWORD va) {
+	DWORD raw = 0;
+	int sizeOfHeaders = is32bitPE ? OptHeader32->SizeOfHeaders : OptHeader64->SizeOfHeaders;
+	if (va < sizeOfHeaders) {
+		raw = va;
+	}
+	PIMAGE_SECTION_HEADER tmpSecHeader = LocationSectionByRVA(va);
+	if (tmpSecHeader != NULL) {
+		raw = va - tmpSecHeader->VirtualAddress + tmpSecHeader->PointerToRawData;
+	}
+	return raw;
+}
+
+PBYTE PEImage::getPtrInBufferByVA(int VirtualAddr) {
+	int raw = Rva2Raw(VirtualAddr);
+	if (raw > fileSize) {
+		return NULL;
+	}
+	return (PBYTE)(peImageData + raw);
+}
+
 
 PEImage::PEImage() {
 	is32bitPE = FALSE;
@@ -107,6 +151,8 @@ PEImage::PEImage() {
 	FileHeader = NULL;
 	OptHeader32 = NULL;
 	OptHeader64 = NULL;
+
+	iidImportCnt = 0;
 }
 
 PEImage::~PEImage() {

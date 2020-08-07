@@ -15,11 +15,13 @@ CrossPE::CrossPE(QWidget *parent)
     ui.setupUi(this);
     peImage = NULL;
     sectionsView = NULL;
+    importView = NULL;
     this->setAcceptDrops(true);
 
     // connections
     connect(this, SIGNAL(fileNameIsReady()), this, SLOT(peImageLoad()));
     connect(ui.btnOpenSectionView, SIGNAL(clicked()), this, SLOT(openPESectionsView()));
+    connect(ui.btnOpenImportTable, SIGNAL(clicked()), this, SLOT(openImportTableView()));
     connect(this, SIGNAL(imageLoaded()), this, SLOT(afterImageLoaded()));
 }
 
@@ -95,6 +97,7 @@ void CrossPE::peImageLoad() {
 void CrossPE::afterImageLoaded() {
     // PE文件加载到内存以后主界面要处理的工作，主要是启用或不启用一些功能，显示pe文件相关信息等等。
     ui.btnOpenSectionView->setEnabled(true);
+    ui.btnOpenImportTable->setEnabled(true);
     
     // 填入te_basicInfo文本框的PE文件信息
     QTextEdit *te_basicInfo = ui.basicPEinfo;
@@ -145,3 +148,9 @@ void CrossPE::openPESectionsView() {
     sectionsView->show();
 }
 
+void CrossPE::openImportTableView() {
+    importView = new ImportView(peImage);
+    importView->setAttribute(Qt::WA_DeleteOnClose);
+    importView->setWindowFlag(Qt::Window, true);
+    importView->show();
+}
