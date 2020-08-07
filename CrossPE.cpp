@@ -22,7 +22,7 @@ CrossPE::CrossPE(QWidget *parent)
     connect(this, SIGNAL(fileNameIsReady()), this, SLOT(peImageLoad()));
     connect(ui.btnOpenSectionView, SIGNAL(clicked()), this, SLOT(openPESectionsView()));
     connect(ui.btnOpenImportTable, SIGNAL(clicked()), this, SLOT(openImportTableView()));
-    connect(this, SIGNAL(imageLoaded()), this, SLOT(afterImageLoaded()));
+    connect(this, SIGNAL(imageLoaded(bool)), this, SLOT(afterImageLoaded(bool)));
 }
 
 CrossPE::~CrossPE() {
@@ -89,13 +89,22 @@ void CrossPE::peImageLoad() {
         delete peImage;
     }
     peImage = new PEImage();
-    peImage->loadPEImage(ba.data());
-    emit imageLoaded();
+    if (!peImage->loadPEImage(ba.data())) {
+        QMessageBox::information(this, "Error", "Not valid PE file!", MB_OK);
+        emit imageLoaded(false);
+    }
+    emit imageLoaded(true);
 }
 
 
-void CrossPE::afterImageLoaded() {
+void CrossPE::afterImageLoaded(bool status) {
     // PE文件加载到内存以后主界面要处理的工作，主要是启用或不启用一些功能，显示pe文件相关信息等等。
+    if (!status) {
+        ui.btnOpenImportTable->setEnabled(status);
+        ui.btnOpenSectionView->setEnabled(status);
+        return;
+    }
+
     ui.btnOpenSectionView->setEnabled(true);
     ui.btnOpenImportTable->setEnabled(true);
     

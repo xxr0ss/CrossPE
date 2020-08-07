@@ -21,8 +21,10 @@ PBYTE PEImage::loadPEImage(HANDLE hFile) {
 		if (!bResult)
 			break;
 
-		if (!VerifyImage(peImageData))
+		if (!VerifyImage(peImageData)) {
+			peImageData = NULL;
 			break;
+		}
 
 		DosHeader = (PIMAGE_DOS_HEADER)peImageData;
 		is32bitPE = checkIs32bit(peImageData);
@@ -88,8 +90,18 @@ BOOL PEImage::checkIs32bit(PBYTE fileBytes) {
 
 BOOL PEImage::VerifyImage(PBYTE imgData) {
 	// TODO: write verification logics
-	// 简单的写个了return true，还没想好要校验些啥内容
-	return true;
+	do {
+		// 校验"MZ"头
+		if (*(PWORD)imgData != 0x5A4D)
+			return FALSE;
+
+		// 校验"PE"头
+		PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)imgData;
+		if (*(PWORD)(imgData + dos_header->e_lfanew) != 0x4550)
+			return FALSE;
+
+	} while (FALSE);
+	return TRUE;
 }
 
 PIMAGE_SECTION_HEADER PEImage::LocationSectionByRVA(int VirtualAddr) {
