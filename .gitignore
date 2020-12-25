@@ -339,6 +339,21 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+# cmake generated files
+CMakeFiles
+CMakeLists.txt.user
+CMakeCache.txt
+cmake_install.cmake
+
+# build generated files
+CrossPE_autogen
+
+
+# vs2019 generated files
 x64
 x86
-CMakeLists.txt.user
+*.vcxproj*
+
+
+# vscode settings
+.vscode
