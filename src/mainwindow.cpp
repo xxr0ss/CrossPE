@@ -75,6 +75,6 @@ void MainWindow::openFileByLineEditPath() {
     QString filepath = ui->FilePathEdit->text();
     qDebug() << "File path: " << filepath;
     
-    //PEManager pemanager = PEManager::getPEManager();
-    //pemanager.fillPe(filepath);
+    PEManager pemanager = PEManager::getPEManager();
+    pemanager.fillPe(filepath);
 }
