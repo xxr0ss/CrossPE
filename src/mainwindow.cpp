@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+
+/*
+* Constructr(s) and destructor
+*/
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,6 +20,13 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+
+
+/*
+* Handle file drag and drop
+*/
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
@@ -44,6 +56,13 @@ void MainWindow::dropEvent(QDropEvent* event)
     emit(le->editingFinished());    // 避免还需要按回车才能启用确定按钮
 }
 
+
+
+
+/*
+* Slots of MainWindow class
+*/
+
 void MainWindow::setConfirmBtnEnabled()
 {
     ui->ConfirmFileBtn->setEnabled(true);
@@ -56,19 +75,6 @@ void MainWindow::openFileByLineEditPath() {
     QString filepath = ui->FilePathEdit->text();
     qDebug() << "File path: " << filepath;
     
-    openFileWithPath(filepath);
-}
-
-
-void MainWindow::openFileWithPath(QString filepath) {
-    QFile* pefile = new QFile(filepath);
-    if (pefile->exists() == false) {
-        QMessageBox::information(this, "File Error", "File not exists", QMessageBox::Ok);
-        return;
-    }
-
-    if (!pefile->open(QIODevice::ReadOnly)) {
-        QMessageBox::information(this, "File Error", "Cannot open file", QMessageBox::Ok);
-        return;
-    }
+    //PEManager pemanager = PEManager::getPEManager();
+    //pemanager.fillPe(filepath);
 }

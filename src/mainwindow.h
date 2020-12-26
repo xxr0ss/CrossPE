@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "PEManager.h"
+
 #include <QMainWindow>
 #include <qdrag.h>
 #include <qevent.h>
@@ -12,6 +14,7 @@
 #include <qmessagebox.h>
 #include <qlineedit.h>
 #include <qdebug.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,9 +39,6 @@ protected:
 private slots:
     void openFileByLineEditPath();
     void setConfirmBtnEnabled();
-
-private:
-    void openFileWithPath(QString path);
 
 private:
     Ui::MainWindow *ui;

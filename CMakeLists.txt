@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
+        src/PEManager.h
+        src/PEManager.cpp
 )
 
 
