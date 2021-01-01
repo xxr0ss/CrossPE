@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget* parent)
 	this->setAcceptDrops(true);
 
 	connect(ui->FilePathEdit, SIGNAL(editingFinished()), this, SLOT(setConfirmBtnEnabled())); // 手动输入完后，确认按钮能正确启用
+
+	PEManager* pemanager = PEManager::getPEManager();
+	connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady())); // FIXME not working correctly
 }
 
 MainWindow::~MainWindow()
@@ -77,4 +80,9 @@ void MainWindow::openFileByLineEditPath() {
 
 	PEManager* pemanager = PEManager::getPEManager();
 	pemanager->fillPe(filepath);
+}
+
+void MainWindow::onPeImageMemoryReady()
+{
+	qDebug() << "peImageMemory ready, can now start analysing";
 }
