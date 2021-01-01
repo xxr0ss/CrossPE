@@ -39,6 +39,7 @@ protected:
 private slots:
     void openFileByLineEditPath();
     void setConfirmBtnEnabled();
+    void onPeImageMemoryReady();
 
 private:
     Ui::MainWindow *ui;
