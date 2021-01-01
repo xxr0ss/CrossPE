@@ -32,11 +32,16 @@ private:
 	int peImageSize = 0;
 	void fillRawPeImage(QByteArray bytesArr);
 
+	WORD peMachineType = IMAGE_FILE_MACHINE_UNKNOWN; // IMAGE_FILE_HEADER.Machine
+
 public:
 	bool isPeReady();
 	void fillPe(const QString filepath);
 
 	int getPeImageSize();
+	WORD getMachineType();
+	QString getMachineTypeName();
+	void analysisPE();
 };
 
 #endif

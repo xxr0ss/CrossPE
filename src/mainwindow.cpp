@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->FilePathEdit, SIGNAL(editingFinished()), this, SLOT(setConfirmBtnEnabled())); // 手动输入完后，确认按钮能正确启用
 
 	PEManager* pemanager = PEManager::getPEManager();
-	connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady())); // FIXME not working correctly
+	connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady()));
 }
 
 MainWindow::~MainWindow()
@@ -61,16 +61,9 @@ void MainWindow::dropEvent(QDropEvent* event)
 
 
 
-
 /*
-* Slots of MainWindow class
+* 文件处理
 */
-
-void MainWindow::setConfirmBtnEnabled()
-{
-	ui->ConfirmFileBtn->setEnabled(true);
-}
-
 
 void MainWindow::openFileByLineEditPath() {
 	qDebug() << "clicked confirm button";
@@ -82,7 +75,46 @@ void MainWindow::openFileByLineEditPath() {
 	pemanager->fillPe(filepath);
 }
 
+
+
+/*
+* Slots of MainWindow class
+*/
+
+void MainWindow::setConfirmBtnEnabled()
+{
+	ui->ConfirmFileBtn->setEnabled(true);
+}
+
+
 void MainWindow::onPeImageMemoryReady()
 {
 	qDebug() << "peImageMemory ready, can now start analysing";
+	PEManager *manager = PEManager::getPEManager();
+
+	// display file info
+	int file_size = manager->getPeImageSize();
+	QString size;
+	if (file_size < 1024) {
+		size = QString::asprintf("%d B", file_size);
+	}
+	else if (file_size < 1024 * 1024) {
+		size = QString::asprintf("%d KB (%d bytes)", file_size >> 10, file_size);
+	}
+	else if (file_size < 1024 * 1024 * 1024) {
+		int kb = file_size % (1 << 20);
+		size = QString::asprintf("%.2f MB (%d bytes)", 
+			(file_size >> 20) + (double)kb / (double)(1 << 20), file_size);
+	}
+	else {
+		// TODO 实现精度更高的显示
+		size = QString::asprintf("%d GB", file_size >> 30);
+	}
+	
+	ui->FileSizeLE->setEnabled(true);
+	ui->FileSizeLE->setText(size);
+
+	// TODO read architecture
+	ui->ArchLE->setEnabled(true);
+	ui->ArchLE->setText(manager->getMachineTypeName());
 }

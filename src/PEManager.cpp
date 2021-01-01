@@ -83,3 +83,53 @@ int PEManager::getPeImageSize()
 	qDebug() << "peImageSize" << peImageSize;
 	return peImageSize;
 }
+
+
+/*
+* 获取并更新PEManager中机器类型
+*/
+WORD PEManager::getMachineType()
+{
+	int ntHeaderOffset = (int)((PIMAGE_NT_HEADERS)((PIMAGE_DOS_HEADER)_rawPeImage)->e_lfanew);
+	peMachineType = ((PIMAGE_NT_HEADERS)(_rawPeImage + ntHeaderOffset))->FileHeader.Machine;
+	return peMachineType;
+}
+
+QString PEManager::getMachineTypeName() {
+	getMachineType();
+	switch (peMachineType) {
+	case IMAGE_FILE_MACHINE_UNKNOWN:
+		return QString("Unknown");
+	case IMAGE_FILE_MACHINE_I386:
+		return QString("X86");
+	case IMAGE_FILE_MACHINE_AMD64:
+		return QString("AMD64");
+	default:
+		return QString("Unsupported");
+	}
+}
+
+void PEManager::analysisPE()
+{	
+	getMachineType();
+	PIMAGE_DOS_HEADER peDosHeader = (PIMAGE_DOS_HEADER)_rawPeImage;
+	if (peMachineType == IMAGE_FILE_MACHINE_I386) {
+		PIMAGE_NT_HEADERS32 nt_header = (PIMAGE_NT_HEADERS32)(_rawPeImage + peDosHeader->e_lfanew);
+		
+		// debug:
+		char magic[3] = { 0 };
+		memcpy(magic, nt_header, 2);
+		qDebug() << magic;
+	}
+	else if (peMachineType == IMAGE_FILE_MACHINE_AMD64) {
+		PIMAGE_NT_HEADERS64 nt_header = (PIMAGE_NT_HEADERS64)(_rawPeImage + peDosHeader->e_lfanew);
+
+		// debug:
+		char magic[3] = { 0 };
+		memcpy(magic, nt_header, 2);
+		qDebug() << magic;
+	}
+
+	qDebug() << "other machine type not supported";
+}
+
