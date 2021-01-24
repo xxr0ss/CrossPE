@@ -42,6 +42,7 @@ public:
 	WORD getMachineType();
 	QString getMachineTypeName();
 	QString getPETypeName();
+	int getWordLength(); // 快速区分是32位还是64位
 
 public:
 	/*
@@ -80,6 +81,8 @@ public:
 	/* 获取IMAGE_FILE头文件偏移*/
 	DWORD getFo_IMAGE_FILE_HEADER();
 
+	/* 获取可选头文件偏移，不区分32和64位*/
+	DWORD getFo_IMAGE_OPTIONAL_HEADER();
 };
 
 #endif

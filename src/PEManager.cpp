@@ -133,6 +133,18 @@ QString PEManager::getPETypeName() {
 }
 
 
+int PEManager::getWordLength()
+{
+	PIMAGE_OPTIONAL_HEADER h = (PIMAGE_OPTIONAL_HEADER)(_rawPeImage + getFo_IMAGE_OPTIONAL_HEADER());
+	if (h->Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
+		return 32;
+	}
+	else if (h->Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC) {
+		return 64;
+	}
+	return -1;
+}
+
 
 
 /*
@@ -149,4 +161,10 @@ DWORD PEManager::getFo_IMAGE_FILE_HEADER()
 	DWORD fo_nt_headers = getFo_IMAGE_NT_HEADERS();
 	return (DWORD) & (((PIMAGE_NT_HEADERS)fo_nt_headers)->FileHeader); // FIXEME 感觉有点问题
 	//return fo_nt_headers + sizeof(DWORD);
+}
+
+DWORD PEManager::getFo_IMAGE_OPTIONAL_HEADER()
+{
+	DWORD fo_nt_headers = getFo_IMAGE_NT_HEADERS();
+	return (DWORD)&(((PIMAGE_NT_HEADERS)fo_nt_headers)->OptionalHeader);
 }

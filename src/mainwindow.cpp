@@ -122,4 +122,7 @@ void MainWindow::onPeImageMemoryReady()
 	// display pe type (exe, dll, sys etc.)
 	ui->PEtypeLE->setEnabled(true);
 	ui->PEtypeLE->setText(manager->getPETypeName());
+
+	// test getFo_IMAGE_OPTION_HEADER
+	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
 }
