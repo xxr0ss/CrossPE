@@ -1,4 +1,4 @@
-#include "PEManager.h"
+﻿#include "PEManager.h"
 
 /*
 * 静态变量进行初始化
