@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
 
@@ -111,10 +111,18 @@ void MainWindow::onPeImageMemoryReady()
 		size = QString::asprintf("%d GB", file_size >> 30);
 	}
 	
+	// display file size
 	ui->FileSizeLE->setEnabled(true);
 	ui->FileSizeLE->setText(size);
 
-	// TODO read architecture
+	// display architecture info
 	ui->ArchLE->setEnabled(true);
 	ui->ArchLE->setText(manager->getMachineTypeName());
+
+	// display pe type (exe, dll, sys etc.)
+	ui->PEtypeLE->setEnabled(true);
+	ui->PEtypeLE->setText(manager->getPETypeName());
+
+	// test getFo_IMAGE_OPTION_HEADER
+	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
 }

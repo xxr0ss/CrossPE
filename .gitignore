@@ -344,6 +344,7 @@ CMakeFiles
 CMakeLists.txt.user
 CMakeCache.txt
 cmake_install.cmake
+.cmake
 
 # build generated files
 CrossPE_autogen

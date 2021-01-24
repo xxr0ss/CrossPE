@@ -2,7 +2,7 @@
 #define PEMANAGER_H
 #include <Windows.h>
 #include <mutex>
-#include <QtCore/qobject.h>
+#include <qobject.h>
 #include <qstring.h>
 #include <qfile.h>
 #include <qiodevice.h>
@@ -41,7 +41,48 @@ public:
 	int getPeImageSize();
 	WORD getMachineType();
 	QString getMachineTypeName();
-	void analysisPE();
+	QString getPETypeName();
+	int getWordLength(); // 快速区分是32位还是64位
+
+public:
+	/*
+	* 这里定义用于快速获取_rawPeImage常用PE文件结构体的地址的函数
+	* 
+	* 感觉这个模块不一定有必要，理论上全部可以通过下面的 (Header_Type*)(_rawPeImage + fileoffset) 进行获取
+	* 
+	* makesure _rawPeImage is ready before calling these functions
+	*/
+
+	PIMAGE_DOS_HEADER getIMAGE_DOS_HEADER() {
+		return (PIMAGE_DOS_HEADER)_rawPeImage;
+	}
+
+	PIMAGE_FILE_HEADER getIMAGE_FILE_HEADER() {
+
+	}
+
+public:
+	/*
+	* 这里定义用于获取对于读入的这个PE文件而言，常用PE文件结构的fileOffset： fo
+	*/
+
+	// TODO add boundary check
+
+	// TODO have these functions tested
+
+	/* 获取dos头文件偏移 */
+	DWORD getFo_IMAGE_DOS_HEADER() {
+		return 0;
+	}
+
+	/* 获取NT头文件偏移*/
+	DWORD getFo_IMAGE_NT_HEADERS();
+
+	/* 获取IMAGE_FILE头文件偏移*/
+	DWORD getFo_IMAGE_FILE_HEADER();
+
+	/* 获取可选头文件偏移，不区分32和64位*/
+	DWORD getFo_IMAGE_OPTIONAL_HEADER();
 };
 
 #endif
