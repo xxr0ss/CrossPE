@@ -46,7 +46,7 @@ void PEManager::fillPe(const QString filepath)
 			QMessageBox::Yes | QMessageBox::Cancel);
 		if (QMessageBox::Cancel == button) {
 			qDebug() << "Clicked Cancel button, Will cancel reading bytes into memory";
-				return;
+			return;
 		}
 	}
 	// now it's QMessageBox::Yes
@@ -67,8 +67,8 @@ void PEManager::fillRawPeImage(QByteArray bytesArr) {
 	}
 	_rawPeImage = (BYTE*)malloc(sizeof(BYTE) * bytesArr.size());
 	if (_rawPeImage == NULL) {
-		QMessageBox::critical(NULL, 
-			"Fatal Error", "Cannot read pe file into memory: allocate memory failed", 
+		QMessageBox::critical(NULL,
+			"Fatal Error", "Cannot read pe file into memory: allocate memory failed",
 			QMessageBox::Ok);
 		return;
 	}
@@ -87,11 +87,14 @@ int PEManager::getPeImageSize()
 
 /*
 * 获取并更新PEManager中机器类型
+*
+* 本质上是通过FileHeader.Machine
 */
 WORD PEManager::getMachineType()
 {
-	int ntHeaderOffset = (int)((PIMAGE_NT_HEADERS)((PIMAGE_DOS_HEADER)_rawPeImage)->e_lfanew);
-	peMachineType = ((PIMAGE_NT_HEADERS)(_rawPeImage + ntHeaderOffset))->FileHeader.Machine;
+	DWORD file_header_addr = getFo_IMAGE_FILE_HEADER();
+	qDebug() << ((PIMAGE_FILE_HEADER)(_rawPeImage + file_header_addr))->Machine;
+	peMachineType = ((PIMAGE_FILE_HEADER)(_rawPeImage + file_header_addr))->Machine;
 	return peMachineType;
 }
 
@@ -109,27 +112,41 @@ QString PEManager::getMachineTypeName() {
 	}
 }
 
-void PEManager::analysisPE()
-{	
-	getMachineType();
-	PIMAGE_DOS_HEADER peDosHeader = (PIMAGE_DOS_HEADER)_rawPeImage;
-	if (peMachineType == IMAGE_FILE_MACHINE_I386) {
-		PIMAGE_NT_HEADERS32 nt_header = (PIMAGE_NT_HEADERS32)(_rawPeImage + peDosHeader->e_lfanew);
-		
-		// debug:
-		char magic[3] = { 0 };
-		memcpy(magic, nt_header, 2);
-		qDebug() << magic;
-	}
-	else if (peMachineType == IMAGE_FILE_MACHINE_AMD64) {
-		PIMAGE_NT_HEADERS64 nt_header = (PIMAGE_NT_HEADERS64)(_rawPeImage + peDosHeader->e_lfanew);
 
-		// debug:
-		char magic[3] = { 0 };
-		memcpy(magic, nt_header, 2);
-		qDebug() << magic;
+QString PEManager::getPETypeName() {
+	// 获取PE文件类型
+	PIMAGE_FILE_HEADER file_header = (PIMAGE_FILE_HEADER)(getFo_IMAGE_FILE_HEADER() + _rawPeImage);
+	WORD chars = file_header->Characteristics;
+	if (IMAGE_FILE_EXECUTABLE_IMAGE | chars) {
+		return QString("Executable");
 	}
 
-	qDebug() << "other machine type not supported";
+	if (IMAGE_FILE_DLL | chars) {
+		return QString("Dynamic link library");
+	}
+
+	if (IMAGE_FILE_SYSTEM | chars) {
+		return QString("System file");
+	}
+
+	return QString("Unknown file type");
 }
 
+
+
+
+/*
+* 各种用于获取文件偏移的函数
+*/
+
+DWORD PEManager::getFo_IMAGE_NT_HEADERS()
+{
+	return ((PIMAGE_DOS_HEADER)_rawPeImage)->e_lfanew;
+}
+
+DWORD PEManager::getFo_IMAGE_FILE_HEADER()
+{
+	DWORD fo_nt_headers = getFo_IMAGE_NT_HEADERS();
+	return (DWORD) & (((PIMAGE_NT_HEADERS)fo_nt_headers)->FileHeader); // FIXEME 感觉有点问题
+	//return fo_nt_headers + sizeof(DWORD);
+}
