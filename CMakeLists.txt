@@ -23,6 +23,9 @@ set(PROJECT_SOURCES
         src/mainwindow.ui
         src/PEManager.h
         src/PEManager.cpp
+        src/sectionsview.h
+        src/sectionsview.cpp
+        src/sectionsview.ui
 )
 
 

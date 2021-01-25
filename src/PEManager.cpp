@@ -1,4 +1,4 @@
-﻿#include "PEManager.h"
+#include "PEManager.h"
 
 /*
 * 静态变量进行初始化
@@ -147,6 +147,25 @@ int PEManager::getWordLength()
 
 
 
+
+/*
+* 各种用于快速获取常用结构体的函数 
+*/
+
+PIMAGE_SECTION_HEADER PEManager::getIMAGE_SECTION_HEADER(int idx)
+{
+	PIMAGE_FILE_HEADER fh = (PIMAGE_FILE_HEADER)(_rawPeImage + getFo_IMAGE_FILE_HEADER());
+	if (idx < 0 || idx >= fh->NumberOfSections) {
+		return 0;
+	}
+
+	PIMAGE_SECTION_HEADER* section_headers = (PIMAGE_SECTION_HEADER*)
+		(_rawPeImage + getFo_IMAGE_SECTION_HEADER_arr());
+
+	return section_headers[idx];
+}
+
+
 /*
 * 各种用于获取文件偏移的函数
 */
@@ -159,12 +178,17 @@ DWORD PEManager::getFo_IMAGE_NT_HEADERS()
 DWORD PEManager::getFo_IMAGE_FILE_HEADER()
 {
 	DWORD fo_nt_headers = getFo_IMAGE_NT_HEADERS();
-	return (DWORD) & (((PIMAGE_NT_HEADERS)fo_nt_headers)->FileHeader); // FIXEME 感觉有点问题
-	//return fo_nt_headers + sizeof(DWORD);
+    return (DWORD)&(((PIMAGE_NT_HEADERS)fo_nt_headers)->FileHeader);
 }
 
 DWORD PEManager::getFo_IMAGE_OPTIONAL_HEADER()
 {
 	DWORD fo_nt_headers = getFo_IMAGE_NT_HEADERS();
-	return (DWORD)&(((PIMAGE_NT_HEADERS)fo_nt_headers)->OptionalHeader);
+    return (DWORD)&(((PIMAGE_NT_HEADERS)fo_nt_headers)->OptionalHeader);
+}
+
+DWORD PEManager::getFo_IMAGE_SECTION_HEADER_arr()
+{
+	PIMAGE_FILE_HEADER fh = (PIMAGE_FILE_HEADER)(_rawPeImage+ getFo_IMAGE_FILE_HEADER());
+	return getFo_IMAGE_OPTIONAL_HEADER() + fh->SizeOfOptionalHeader;
 }
