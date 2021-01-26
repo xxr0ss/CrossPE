@@ -75,6 +75,9 @@ void PEManager::fillRawPeImage(QByteArray bytesArr) {
 
 	memcpy(_rawPeImage, bytesArr.constData(), bytesArr.size());
 	qDebug() << "emit peImageMemory";
+
+	_timestamp_rawPeImage = QDateTime::currentSecsSinceEpoch();
+
 	emit peImageMemoryReady();
 }
 
@@ -146,23 +149,26 @@ int PEManager::getWordLength()
 }
 
 
-
-
-/*
-* 各种用于快速获取常用结构体的函数 
-*/
-
-PIMAGE_SECTION_HEADER PEManager::getIMAGE_SECTION_HEADER(int idx)
+QList<PIMAGE_SECTION_HEADER> PEManager::getSectionsHeaderList()
 {
-	PIMAGE_FILE_HEADER fh = (PIMAGE_FILE_HEADER)(_rawPeImage + getFo_IMAGE_FILE_HEADER());
-	if (idx < 0 || idx >= fh->NumberOfSections) {
-		return 0;
+	// 如果时间戳相同说明之前获取过当前内存中这份镜像的节区表来构建QList，直接返回就好而不用
+	// 浪费机器性能重新生成
+	if (_timestamp_rawPeImage == _timestamp_peSectionsHeaderList) {
+		return peSectionsHeaderList;
 	}
 
-	PIMAGE_SECTION_HEADER* section_headers = (PIMAGE_SECTION_HEADER*)
-		(_rawPeImage + getFo_IMAGE_SECTION_HEADER_arr());
+	_timestamp_peSectionsHeaderList = _timestamp_rawPeImage;
+	qDeleteAll(peSectionsHeaderList); // TODO: test if it really frees the memory of the pointers
 
-	return section_headers[idx];
+	PIMAGE_FILE_HEADER fh = getIMAGE_FILE_HEADER();
+	for (int i = 0; i < fh->NumberOfSections; i++) {
+		// 分配新的内存而不是直接把指针赋值指向_rawPeImage的节区
+		PIMAGE_SECTION_HEADER sh = (PIMAGE_SECTION_HEADER)malloc(sizeof(PIMAGE_SECTION_HEADER));
+		memcpy(sh, getIMAGE_SECTION_HEADER(i), sizeof(IMAGE_SECTION_HEADER));
+		peSectionsHeaderList.append(sh);
+	}
+
+	return peSectionsHeaderList;
 }
 
 
@@ -191,4 +197,28 @@ DWORD PEManager::getFo_IMAGE_SECTION_HEADER_arr()
 {
 	PIMAGE_FILE_HEADER fh = (PIMAGE_FILE_HEADER)(_rawPeImage+ getFo_IMAGE_FILE_HEADER());
 	return getFo_IMAGE_OPTIONAL_HEADER() + fh->SizeOfOptionalHeader;
+}
+
+
+
+/*
+* 各种用于快速获取常用结构体的函数
+*/
+
+PIMAGE_FILE_HEADER PEManager::getIMAGE_FILE_HEADER()
+{
+	return PIMAGE_FILE_HEADER(_rawPeImage + getFo_IMAGE_FILE_HEADER());
+}
+
+PIMAGE_SECTION_HEADER PEManager::getIMAGE_SECTION_HEADER(int idx)
+{
+	PIMAGE_FILE_HEADER fh = (PIMAGE_FILE_HEADER)(_rawPeImage + getFo_IMAGE_FILE_HEADER());
+	if (idx < 0 || idx >= fh->NumberOfSections) {
+		return 0;
+	}
+
+	PIMAGE_SECTION_HEADER section_header = (PIMAGE_SECTION_HEADER)
+		(_rawPeImage + getFo_IMAGE_SECTION_HEADER_arr() + sizeof(IMAGE_SECTION_HEADER) * idx);
+
+	return section_header;
 }
