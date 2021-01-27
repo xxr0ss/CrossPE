@@ -149,16 +149,35 @@ int PEManager::getWordLength()
 }
 
 
-QList<PIMAGE_SECTION_HEADER> PEManager::getSectionsHeaderList()
+QList<PIMAGE_SECTION_HEADER> const & PEManager::getSectionsHeaderList()
 {
 	// 如果时间戳相同说明之前获取过当前内存中这份镜像的节区表来构建QList，直接返回就好而不用
 	// 浪费机器性能重新生成
 	if (_timestamp_rawPeImage == _timestamp_peSectionsHeaderList) {
+		qDebug() << "using cached peSectionsHeaderList";
 		return peSectionsHeaderList;
 	}
 
 	_timestamp_peSectionsHeaderList = _timestamp_rawPeImage;
-	qDeleteAll(peSectionsHeaderList); // TODO: test if it really frees the memory of the pointers
+	
+	// 释放之前储存的节区表
+	//TODO 考虑换用智能指针来写
+	auto begin = peSectionsHeaderList.begin();
+	auto end = peSectionsHeaderList.end();
+	if (!peSectionsHeaderList.isEmpty()) {
+		while (begin != end) {
+			PIMAGE_SECTION_HEADER sh = *begin;
+			if (sh != NULL) {
+				qDebug() << "freed section header" << (void*)sh;
+				free(sh);
+				sh = NULL;
+			}
+			begin++;
+		}
+	}
+	peSectionsHeaderList.clear(); // FIXME 这里好像会出问题
+
+	qDebug() << peSectionsHeaderList.capacity();
 
 	PIMAGE_FILE_HEADER fh = getIMAGE_FILE_HEADER();
 	for (int i = 0; i < fh->NumberOfSections; i++) {
@@ -168,6 +187,7 @@ QList<PIMAGE_SECTION_HEADER> PEManager::getSectionsHeaderList()
 		peSectionsHeaderList.append(sh);
 	}
 
+	qDebug() << "using newly created peSectionsHeaderList";
 	return peSectionsHeaderList;
 }
 

@@ -4,10 +4,14 @@ SectionsModel::SectionsModel()
 {
 }
 
+SectionsModel::~SectionsModel()
+{
+}
+
 int SectionsModel::rowCount(const QModelIndex& parent) const
 {
     PEManager* manager = PEManager::getPEManager();
-    return manager->getSectionsHeaderList().length();
+    return manager->getIMAGE_FILE_HEADER()->NumberOfSections;
 }
 
 int SectionsModel::columnCount(const QModelIndex& parent) const
@@ -20,9 +24,8 @@ QVariant SectionsModel::data(const QModelIndex& index, int role) const
     // TODO: write my own logic of display sections table
     int row = index.row();
     int col = index.column();
-    // generate a log message when this method gets called
-    qDebug() << QString("row %1, col%2, role %3")
-        .arg(row).arg(col).arg(role);
+    //qDebug() << QString("row %1, col%2, role %3")
+    //    .arg(row).arg(col).arg(role);
 
     switch (role) {
     case Qt::DisplayRole:

@@ -10,6 +10,7 @@ class SectionsModel : public QAbstractTableModel
 public:
     SectionsModel();
 
+    ~SectionsModel();
 
     // 通过 QAbstractTableModel 继承
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
