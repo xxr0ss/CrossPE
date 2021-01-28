@@ -18,6 +18,7 @@ void SectionsView::setupSectionsTable()
 {
 
     ui->sectionsTableView->setModel(new SectionsModel);
+    
 }
 
 

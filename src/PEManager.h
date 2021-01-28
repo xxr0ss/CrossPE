@@ -53,7 +53,7 @@ public:
 	
 	int getWordLength(); // 快速区分是32位还是64位
 
-	QList<PIMAGE_SECTION_HEADER> const & getSectionsHeaderList();
+	QList<PIMAGE_SECTION_HEADER> & getSectionsHeaderList();
 
 	QString getPETypeName();
 
