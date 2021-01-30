@@ -18,8 +18,8 @@ public:
 
 private:
     Ui::SectionsView *ui;
-
-    void setupSectionsTable();
+    
+    SectionsModel* model;
 };
 
 #endif // SECTIONSVIEW_H
