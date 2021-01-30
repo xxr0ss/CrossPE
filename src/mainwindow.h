@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "PEManager.h"
+#include "sectionsview.h"
 
 #include <QMainWindow>
 #include <qdrag.h>
@@ -43,6 +44,8 @@ private slots:
     void onPeImageMemoryReady();
 
     void on_actionOpen_triggered();
+
+    void openSectionsView();
 
 private:
     Ui::MainWindow *ui;

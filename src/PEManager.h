@@ -9,7 +9,10 @@
 #include <qmessagebox.h>
 #include <qbytearray.h>
 #include <qdebug.h>
+#include <qlist.h>
+#include <qdatetime.h>
 
+// TODO: 考虑用模板实现对32位和64位的适应
 
 class PEManager: public QObject
 {
@@ -28,11 +31,17 @@ private:
 	static PEManager* _instance;
 
 private:
-	BYTE* _rawPeImage = NULL;
+	BYTE* _rawPeImage = NULL; // 提供时间戳缓存机制，每次重新获取比较麻烦的数据可以利用缓存
+	qint64 _timestamp_rawPeImage = 0;
+
 	int peImageSize = 0;
-	void fillRawPeImage(QByteArray bytesArr);
 
 	WORD peMachineType = IMAGE_FILE_MACHINE_UNKNOWN; // IMAGE_FILE_HEADER.Machine
+	
+	qint64 _timestamp_peSectionsHeaderList = 0;
+	QList<PIMAGE_SECTION_HEADER> peSectionsHeaderList;
+
+	void fillRawPeImage(QByteArray bytesArr);
 
 public:
 	bool isPeReady();
@@ -41,9 +50,12 @@ public:
 	int getPeImageSize();
 	WORD getMachineType();
 	QString getMachineTypeName();
-	QString getPETypeName();
+	
 	int getWordLength(); // 快速区分是32位还是64位
 
+	QList<PIMAGE_SECTION_HEADER> & getSectionsHeaderList();
+
+	QString getPETypeName();
 
 public:
 	/*
@@ -86,9 +98,7 @@ public:
 		return (PIMAGE_DOS_HEADER)_rawPeImage;
 	}
 
-	PIMAGE_FILE_HEADER getIMAGE_FILE_HEADER() {
-
-	}
+	PIMAGE_FILE_HEADER getIMAGE_FILE_HEADER();
 
 	/* 用于获取节区头数组中，第i个节区头*/
 	PIMAGE_SECTION_HEADER getIMAGE_SECTION_HEADER(int idx);

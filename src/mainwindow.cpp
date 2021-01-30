@@ -124,6 +124,9 @@ void MainWindow::onPeImageMemoryReady()
 	ui->PEtypeLE->setEnabled(true);
 	ui->PEtypeLE->setText(manager->getPETypeName());
 
+    // enable sections view button
+    ui->sectionsView_bt->setEnabled(true);
+
 	// test getFo_IMAGE_OPTION_HEADER
 	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
 }
@@ -139,4 +142,17 @@ void MainWindow::on_actionOpen_triggered()
 
     ui->FilePathEdit->setText(filename);
     emit(ui->FilePathEdit->editingFinished());
+}
+
+
+/*
+ * 界面跳转
+*/
+
+void MainWindow::openSectionsView()
+{
+    SectionsView *sv = new SectionsView();
+    sv->setAttribute(Qt::WA_DeleteOnClose);
+    sv->setWindowFlag(Qt::Window, true);
+    sv->show();
 }

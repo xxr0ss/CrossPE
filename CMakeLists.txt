@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         src/sectionsview.h
         src/sectionsview.cpp
         src/sectionsview.ui
+        src/sectionsmodel.h
+        src/sectionsmodel.cpp
 )
 
 
