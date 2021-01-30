@@ -9,7 +9,7 @@ SectionsModel::SectionsModel()
 
 SectionsModel::~SectionsModel()
 {
-	delete &columnLabels;
+	// delete &columnLabels; // donot delete, will cause failure;
 }
 
 int SectionsModel::rowCount(const QModelIndex& parent) const
