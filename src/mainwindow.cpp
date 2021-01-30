@@ -65,6 +65,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 * 文件处理
 */
 
+/* 文件路径得到之后都设置下主界面的路径编辑框，再通过这个把文件打开，对PEManager进行数据填充*/
 void MainWindow::openFileByLineEditPath() {
 	qDebug() << "clicked confirm button";
 
@@ -123,6 +124,35 @@ void MainWindow::onPeImageMemoryReady()
 	ui->PEtypeLE->setEnabled(true);
 	ui->PEtypeLE->setText(manager->getPETypeName());
 
+    // enable sections view button
+    ui->sectionsView_bt->setEnabled(true);
+
 	// test getFo_IMAGE_OPTION_HEADER
 	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
+}
+
+/*
+ * 菜单栏的处理逻辑
+*/
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Select a file");
+    qDebug() << "opened file through menu/open : " << filename;
+
+    ui->FilePathEdit->setText(filename);
+    emit(ui->FilePathEdit->editingFinished());
+}
+
+
+/*
+ * 界面跳转
+*/
+
+void MainWindow::openSectionsView()
+{
+    SectionsView *sv = new SectionsView();
+    sv->setAttribute(Qt::WA_DeleteOnClose);
+    sv->setWindowFlag(Qt::Window, true);
+    sv->show();
 }

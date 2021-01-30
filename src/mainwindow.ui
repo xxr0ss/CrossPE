@@ -52,7 +52,7 @@
       <x>30</x>
       <y>50</y>
       <width>451</width>
-      <height>71</height>
+      <height>101</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -118,6 +118,20 @@
        </item>
       </layout>
      </item>
+     <item>
+      <layout class="QHBoxLayout" name="viewsHL">
+       <item>
+        <widget class="QPushButton" name="sectionsView_bt">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Sections</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -127,7 +141,7 @@
      <x>0</x>
      <y>0</y>
      <width>504</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -142,6 +156,9 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>
@@ -163,8 +180,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>sectionsView_bt</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openSectionsView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>53</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openFileByLineEditPath()</slot>
+  <slot>openSectionsView()</slot>
  </slots>
 </ui>

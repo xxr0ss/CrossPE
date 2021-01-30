@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "PEManager.h"
+#include "sectionsview.h"
 
 #include <QMainWindow>
 #include <qdrag.h>
@@ -14,6 +15,7 @@
 #include <qmessagebox.h>
 #include <qlineedit.h>
 #include <qdebug.h>
+#include <qfiledialog.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +28,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 signals:
-    void lineEditFilePathReady();
+    void lineEditFilePathReady(); // TODO: 这个并没有被用到
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -40,6 +42,10 @@ private slots:
     void openFileByLineEditPath();
     void setConfirmBtnEnabled();
     void onPeImageMemoryReady();
+
+    void on_actionOpen_triggered();
+
+    void openSectionsView();
 
 private:
     Ui::MainWindow *ui;

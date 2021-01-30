@@ -9,7 +9,10 @@
 #include <qmessagebox.h>
 #include <qbytearray.h>
 #include <qdebug.h>
+#include <qlist.h>
+#include <qdatetime.h>
 
+// TODO: 考虑用模板实现对32位和64位的适应
 
 class PEManager: public QObject
 {
@@ -28,11 +31,17 @@ private:
 	static PEManager* _instance;
 
 private:
-	BYTE* _rawPeImage = NULL;
+	BYTE* _rawPeImage = NULL; // 提供时间戳缓存机制，每次重新获取比较麻烦的数据可以利用缓存
+	qint64 _timestamp_rawPeImage = 0;
+
 	int peImageSize = 0;
-	void fillRawPeImage(QByteArray bytesArr);
 
 	WORD peMachineType = IMAGE_FILE_MACHINE_UNKNOWN; // IMAGE_FILE_HEADER.Machine
+	
+	qint64 _timestamp_peSectionsHeaderList = 0;
+	QList<PIMAGE_SECTION_HEADER> peSectionsHeaderList;
+
+	void fillRawPeImage(QByteArray bytesArr);
 
 public:
 	bool isPeReady();
@@ -41,25 +50,12 @@ public:
 	int getPeImageSize();
 	WORD getMachineType();
 	QString getMachineTypeName();
-	QString getPETypeName();
+	
 	int getWordLength(); // 快速区分是32位还是64位
 
-public:
-	/*
-	* 这里定义用于快速获取_rawPeImage常用PE文件结构体的地址的函数
-	* 
-	* 感觉这个模块不一定有必要，理论上全部可以通过下面的 (Header_Type*)(_rawPeImage + fileoffset) 进行获取
-	* 
-	* makesure _rawPeImage is ready before calling these functions
-	*/
+	QList<PIMAGE_SECTION_HEADER> & getSectionsHeaderList();
 
-	PIMAGE_DOS_HEADER getIMAGE_DOS_HEADER() {
-		return (PIMAGE_DOS_HEADER)_rawPeImage;
-	}
-
-	PIMAGE_FILE_HEADER getIMAGE_FILE_HEADER() {
-
-	}
+	QString getPETypeName();
 
 public:
 	/*
@@ -83,6 +79,29 @@ public:
 
 	/* 获取可选头文件偏移，不区分32和64位*/
 	DWORD getFo_IMAGE_OPTIONAL_HEADER();
+
+	/* 获取节区头数组文件偏移*/
+	DWORD getFo_IMAGE_SECTION_HEADER_arr();
+
+
+public:
+	/*
+	* 这里定义用于快速获取_rawPeImage常用PE文件结构体的地址的函数
+	*
+	* 这里的函数大都依赖上面那些用于获取文件偏移的函数实现，上面要补充的时候，不推荐使用这里的函数来实现，
+	* 相互依赖的话，维护会比较麻烦易错。
+	*
+	* makesure _rawPeImage is ready before calling these functions
+	*/
+
+	PIMAGE_DOS_HEADER getIMAGE_DOS_HEADER() {
+		return (PIMAGE_DOS_HEADER)_rawPeImage;
+	}
+
+	PIMAGE_FILE_HEADER getIMAGE_FILE_HEADER();
+
+	/* 用于获取节区头数组中，第i个节区头*/
+	PIMAGE_SECTION_HEADER getIMAGE_SECTION_HEADER(int idx);
 };
 
 #endif
