@@ -1,4 +1,4 @@
-#include "sectionsmodel.h"
+ï»¿#include "sectionsmodel.h"
 
 SectionsModel::SectionsModel()
 {
@@ -9,6 +9,7 @@ SectionsModel::SectionsModel()
 
 SectionsModel::~SectionsModel()
 {
+	delete &columnLabels;
 }
 
 int SectionsModel::rowCount(const QModelIndex& parent) const
@@ -31,7 +32,7 @@ QVariant SectionsModel::data(const QModelIndex& index, int role) const
 	PEManager* manager = PEManager::getPEManager();
 	auto& sectionheaders = manager->getSectionsHeaderList();
 	PIMAGE_SECTION_HEADER currentSection = sectionheaders[row];
-	int wordLength = manager->getWordLength(); // ¸ù¾Ý×Ö³¤£¬Ò²¾ÍÊÇ32Î»ºÍ64Î»¶ÔÐèÒªÇø·ÖµÄÊä³öÊý¾Ý½øÐÐÇø·Ö
+	int wordLength = manager->getWordLength(); // æ ¹æ®å­—é•¿ï¼Œä¹Ÿå°±æ˜¯32ä½å’Œ64ä½å¯¹éœ€è¦åŒºåˆ†çš„è¾“å‡ºæ•°æ®è¿›è¡ŒåŒºåˆ†
 
 	switch (role) {
 	case Qt::DisplayRole:

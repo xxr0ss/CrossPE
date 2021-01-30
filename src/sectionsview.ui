@@ -6,23 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
+    <width>749</width>
     <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sections View</string>
   </property>
-  <widget class="QTableView" name="sectionsTableView">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>551</width>
-     <height>231</height>
-    </rect>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTableView" name="sectionsTableView">
+     <property name="maximumSize">
+      <size>
+       <width>3000</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
