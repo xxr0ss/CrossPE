@@ -354,6 +354,7 @@ CrossPE_autogen
 x64
 x86
 *.vcxproj*
+*.sln
 
 
 # vscode settings
