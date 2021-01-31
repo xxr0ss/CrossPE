@@ -15,19 +15,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
+FILE(GLOB HEADER_FILES "include/*.h")
+FILE(GLOB SRC_FILES "src/*.c" "src/*.cpp")
+
 set(PROJECT_SOURCES
-        src/CrossPE.h
-        src/main.cpp
-        src/mainwindow.cpp
-        src/mainwindow.h
-        src/mainwindow.ui
-        src/PEManager.h
-        src/PEManager.cpp
-        src/sectionsview.h
-        src/sectionsview.cpp
-        src/sectionsview.ui
-        src/sectionsmodel.h
-        src/sectionsmodel.cpp
+        ${SRC_FILES}
+        ${HEADER_FILES}
 )
 
 
