@@ -15,8 +15,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
-FILE(GLOB HEADER_FILES "include/*.h")
-FILE(GLOB SRC_FILES "src/*.c" "src/*.cpp")
+set(HEADER_DIR "${CMAKE_SOURCE_DIR}/include")
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+
+include_directories(${HEADER_DIR})
+FILE(GLOB HEADER_FILES "${HEADER_DIR}/*.h")
+FILE(GLOB SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
 set(PROJECT_SOURCES
         ${SRC_FILES}
