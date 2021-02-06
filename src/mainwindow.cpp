@@ -1,4 +1,4 @@
-﻿#include "mainwindow.h"
+#include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
 
@@ -17,6 +17,14 @@ MainWindow::MainWindow(QWidget* parent)
 
 	PEManager* pemanager = PEManager::getPEManager();
 	connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady()));
+
+
+	QStringList argv = QCoreApplication::arguments();
+	qDebug() << argv;
+	if (argv.length() > 1) {
+		ui->FilePathEdit->setText(argv[1]);
+		ui->FilePathEdit->editingFinished();
+	}
 }
 
 MainWindow::~MainWindow()
