@@ -3,6 +3,7 @@
 
 #include "PEManager.h"
 #include "sectionsview.h"
+#include "homepage.h"
 
 #include <QMainWindow>
 #include <qdrag.h>
@@ -27,9 +28,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-signals:
-    void lineEditFilePathReady(); // TODO: 这个并没有被用到
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -39,13 +37,7 @@ protected:
     void dropEvent(QDropEvent* event);
 
 private slots:
-    void openFileByLineEditPath();
-    void setConfirmBtnEnabled();
-    void onPeImageMemoryReady();
-
     void on_actionOpen_triggered();
-
-    void openSectionsView();
 
 private:
     Ui::MainWindow *ui;
