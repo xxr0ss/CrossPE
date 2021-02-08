@@ -97,5 +97,12 @@ void Homepage::openSectionsView()
 //    SectionsView *sv = new SectionsView();
 //    sv->setAttribute(Qt::WA_DeleteOnClose);
 //    sv->setWindowFlag(Qt::Window, true);
-//    sv->show();
+    //    sv->show();
+}
+
+void Homepage::receiveFile(QString filepath)
+{
+    QLineEdit* le = ui->FilePathEdit;
+    le->setText(filepath);
+    emit le->editingFinished();
 }

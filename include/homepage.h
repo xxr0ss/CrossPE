@@ -22,6 +22,7 @@ private slots:
     void setConfirmBtnEnabled();
     void onPeImageMemoryReady();
     void openSectionsView();
+    void receiveFile(QString filepath);
 
 
 private:

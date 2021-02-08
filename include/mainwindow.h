@@ -27,6 +27,8 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+signals:
+    void externalFilepathGot(QString filepath); // TODO: 增加一个枚举参数，可指定具体来源，方便细化程序行为表现
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -38,6 +40,9 @@ protected:
 
 private slots:
     void on_actionOpen_triggered();
+
+private:
+    void checkArgs();
 
 private:
     Ui::MainWindow *ui;

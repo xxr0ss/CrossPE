@@ -127,5 +127,25 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>ConfirmFileBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>Homepage</receiver>
+   <slot>openFileByLineEditPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>435</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>468</x>
+     <y>27</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openFileByLineEditPath()</slot>
+ </slots>
 </ui>
