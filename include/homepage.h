@@ -12,6 +12,8 @@ class Homepage;
 class Homepage : public QWidget
 {
     Q_OBJECT
+signals:
+    void requestForSectionsView();
 
 public:
     explicit Homepage(QWidget *parent = nullptr);
@@ -20,9 +22,9 @@ public:
 private slots:
     void openFileByLineEditPath();
     void setConfirmBtnEnabled();
-    void onPeImageMemoryReady();
-    void openSectionsView();
+    void onPeImageMemoryReady(bool isReady);
     void receiveFile(QString filepath);
+    void displaySectionsView();
 
 
 private:

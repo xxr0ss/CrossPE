@@ -60,6 +60,7 @@ void PEManager::fillPe(const QString filepath)
 * 将PEManager管理的PE文件buffer进行填充
 */
 void PEManager::fillRawPeImage(QByteArray bytesArr) {
+    emit peImageMemoryReady(false);
 	peImageSize = bytesArr.size();
 	if (_rawPeImage != NULL) {
 		// 考虑到之前还可能有打开过别的PE文件，所以这里有必要清理内存
@@ -78,7 +79,7 @@ void PEManager::fillRawPeImage(QByteArray bytesArr) {
 
 	_timestamp_rawPeImage = QDateTime::currentSecsSinceEpoch();
 
-	emit peImageMemoryReady();
+    emit peImageMemoryReady(true);
 }
 
 int PEManager::getPeImageSize()

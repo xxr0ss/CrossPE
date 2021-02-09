@@ -25,19 +25,43 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
    </widget>
+   <widget class="QMenu" name="menuPE">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;PE</string>
+    </property>
+    <addaction name="actionSections_View"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuPE"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="toolTip">
+    <string>Open a PE file</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSections_View">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sections View</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Sections View</string>
    </property>
   </action>
  </widget>

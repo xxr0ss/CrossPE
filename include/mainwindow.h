@@ -40,12 +40,18 @@ protected:
 
 private slots:
     void on_actionOpen_triggered();
+    void on_actionSections_View_triggered();
+    void onPeImageMemoryStatus(bool isReady);
+
+    void displaySectionsView();
 
 private:
     void checkArgs();
 
 private:
     Ui::MainWindow *ui;
+
+    SectionsView *sv;
 };
 #endif // MAINWINDOW_H
 

@@ -8,7 +8,7 @@ Homepage::Homepage(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->FilePathEdit, SIGNAL(editingFinished()), this, SLOT(setConfirmBtnEnabled())); // 手动输入完后，确认按钮能正确启用
     PEManager* pemanager = PEManager::getPEManager();
-    connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady()));
+    connect(pemanager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryReady(bool)));
     
     QStringList argv = QCoreApplication::arguments();
 	qDebug() << argv;
@@ -48,8 +48,11 @@ void Homepage::setConfirmBtnEnabled()
 	ui->ConfirmFileBtn->setEnabled(true);
 }
 
-void Homepage::onPeImageMemoryReady()
+void Homepage::onPeImageMemoryReady(bool isReady)
 {
+    if (!isReady) {
+        return;
+    }
 	qDebug() << "peImageMemory ready, can now start analysing";
 	PEManager *manager = PEManager::getPEManager();
 
@@ -91,18 +94,15 @@ void Homepage::onPeImageMemoryReady()
 //	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
 }
 
-
-void Homepage::openSectionsView()
-{
-//    SectionsView *sv = new SectionsView();
-//    sv->setAttribute(Qt::WA_DeleteOnClose);
-//    sv->setWindowFlag(Qt::Window, true);
-    //    sv->show();
-}
-
 void Homepage::receiveFile(QString filepath)
 {
     QLineEdit* le = ui->FilePathEdit;
     le->setText(filepath);
     emit le->editingFinished();
+}
+
+
+void Homepage::displaySectionsView()
+{
+    emit requestForSectionsView();
 }

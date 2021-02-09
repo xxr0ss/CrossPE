@@ -10,6 +10,12 @@
     <height>138</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -23,6 +29,9 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -144,8 +153,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>sectionsView_bt</sender>
+   <signal>clicked()</signal>
+   <receiver>Homepage</receiver>
+   <slot>displaySectionsView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openFileByLineEditPath()</slot>
+  <slot>displaySectionsView()</slot>
  </slots>
 </ui>

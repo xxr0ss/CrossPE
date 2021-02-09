@@ -16,6 +16,12 @@ MainWindow::MainWindow(QWidget* parent)
     setCentralWidget(hp);
 
     connect(this, SIGNAL(externalFilepathGot(QString)), hp, SLOT(receiveFile(QString)));
+    connect(hp, SIGNAL(requestForSectionsView()), this, SLOT(displaySectionsView()));
+
+    PEManager *manager = PEManager::getPEManager();
+    connect(manager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryReady(bool)));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +66,25 @@ void MainWindow::on_actionOpen_triggered()
 
    emit externalFilepathGot(filename);
 }
+
+void MainWindow::on_actionSections_View_triggered()
+{
+    displaySectionsView();
+}
+
+void MainWindow::onPeImageMemoryStatus(bool isReady)
+{
+    ui->menuPE->setEnabled(isReady);
+}
+
+void MainWindow::displaySectionsView()
+{
+    SectionsView *sv = new SectionsView();
+    sv->setAttribute(Qt::WA_DeleteOnClose);
+    sv->setWindowFlag(Qt::Window, true);
+    sv->show();
+}
+
 
 void MainWindow::checkArgs()
 {

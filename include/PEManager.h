@@ -19,7 +19,7 @@ class PEManager: public QObject
 	Q_OBJECT // 反正也使用了qt的东西了，干脆做个Q_OBJECT得了，也方便使用信号和槽
 
 signals:
-	void peImageMemoryReady(); // _rawPeImage被填充完毕
+    void peImageMemoryReady(bool isReady); // _rawPeImage被填充完毕
 
 public:
 	static PEManager* getPEManager();
