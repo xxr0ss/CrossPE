@@ -36,6 +36,7 @@
     <property name="title">
      <string>&amp;PE</string>
     </property>
+    <addaction name="actionHomepage"/>
     <addaction name="actionSections_View"/>
    </widget>
    <addaction name="menuFile"/>
@@ -62,6 +63,11 @@
    </property>
    <property name="toolTip">
     <string>Open Sections View</string>
+   </property>
+  </action>
+  <action name="actionHomepage">
+   <property name="text">
+    <string>Open Homepage</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,7 @@ Homepage::Homepage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Homepage)
 {
+	this->parent = parent;
     ui->setupUi(this);
     connect(ui->FilePathEdit, SIGNAL(editingFinished()), this, SLOT(setConfirmBtnEnabled())); // 手动输入完后，确认按钮能正确启用
     PEManager* pemanager = PEManager::getPEManager();
@@ -21,6 +22,12 @@ Homepage::Homepage(QWidget *parent) :
 Homepage::~Homepage()
 {
     delete ui;
+}
+
+QSize Homepage::sizeHint() const
+{
+	// TODO fix this
+	return parent->size();
 }
 
 

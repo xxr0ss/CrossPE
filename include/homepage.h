@@ -18,6 +18,7 @@ signals:
 public:
     explicit Homepage(QWidget *parent = nullptr);
     ~Homepage();
+    QSize sizeHint() const; // 用于父窗口能以正确大小显示该控件dock
 
 private slots:
     void openFileByLineEditPath();
@@ -29,6 +30,7 @@ private slots:
 
 private:
     Ui::Homepage *ui;
+    QWidget* parent;
 };
 
 #endif // HOMEPAGE_H

@@ -12,16 +12,13 @@ MainWindow::MainWindow(QWidget* parent)
 {
 	ui->setupUi(this);
 	this->setAcceptDrops(true);
-    Homepage *hp = new Homepage();
-    setCentralWidget(hp);
-
+    createDockWindows();
+    
     connect(this, SIGNAL(externalFilepathGot(QString)), hp, SLOT(receiveFile(QString)));
     connect(hp, SIGNAL(requestForSectionsView()), this, SLOT(displaySectionsView()));
 
     PEManager *manager = PEManager::getPEManager();
-    connect(manager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryReady(bool)));
-
-
+    connect(manager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryStatus(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -93,4 +90,14 @@ void MainWindow::checkArgs()
     if (argv.length() > 1) {
         emit externalFilepathGot(argv[1]);
     }
+}
+
+void MainWindow::createDockWindows()
+{
+    QDockWidget* dock = new QDockWidget("Homepage", this);
+    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
+    hp = new Homepage(this);
+    dock->setWidget(hp);
+    addDockWidget(Qt::TopDockWidgetArea, dock);
+    ui->menuPE->addAction(dock->toggleViewAction());
 }

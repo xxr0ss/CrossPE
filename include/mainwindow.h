@@ -6,6 +6,7 @@
 #include "homepage.h"
 
 #include <QMainWindow>
+#include <qdockwidget.h>
 #include <qdrag.h>
 #include <qevent.h>
 #include <qpoint.h>
@@ -41,17 +42,20 @@ protected:
 private slots:
     void on_actionOpen_triggered();
     void on_actionSections_View_triggered();
+    //void on_actionHomepage_triggered();
     void onPeImageMemoryStatus(bool isReady);
 
     void displaySectionsView();
 
 private:
     void checkArgs();
+    void createDockWindows();
 
 private:
     Ui::MainWindow *ui;
 
     SectionsView *sv;
+    Homepage* hp;
 };
 #endif // MAINWINDOW_H
 
