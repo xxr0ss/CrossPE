@@ -72,6 +72,7 @@ void MainWindow::on_actionSections_View_triggered()
 void MainWindow::onPeImageMemoryStatus(bool isReady)
 {
     ui->menuPE->setEnabled(isReady);
+    ui->actionSections_View->setEnabled(isReady);
 }
 
 void MainWindow::displaySectionsView()

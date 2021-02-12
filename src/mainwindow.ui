@@ -36,7 +36,6 @@
     <property name="title">
      <string>&amp;PE</string>
     </property>
-    <addaction name="actionHomepage"/>
     <addaction name="actionSections_View"/>
    </widget>
    <addaction name="menuFile"/>
@@ -56,7 +55,7 @@
   </action>
   <action name="actionSections_View">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Sections View</string>
