@@ -77,9 +77,14 @@ void MainWindow::onPeImageMemoryStatus(bool isReady)
 
 void MainWindow::displaySectionsView()
 {
-    SectionsView *sv = new SectionsView();
-    sv->setAttribute(Qt::WA_DeleteOnClose);
-    sv->setWindowFlag(Qt::Window, true);
+    if (sv == nullptr) {
+        qDebug() << "using new sections view";
+        sv = new SectionsView();
+    }
+    else {
+        sv->setWindowFlag(Qt::Window, true);
+        qDebug() << "using cached sections view";
+    }
     sv->show();
 }
 

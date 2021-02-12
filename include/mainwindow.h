@@ -54,8 +54,8 @@ private:
 private:
     Ui::MainWindow *ui;
 
-    SectionsView *sv;
-    Homepage* hp;
+    SectionsView *sv = nullptr;
+    Homepage* hp = nullptr;
 };
 #endif // MAINWINDOW_H
 

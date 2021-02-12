@@ -155,7 +155,7 @@ QList<PIMAGE_SECTION_HEADER> & PEManager::getSectionsHeaderList()
 	// 如果时间戳相同说明之前获取过当前内存中这份镜像的节区表来构建QList，直接返回就好而不用
 	// 浪费机器性能重新生成
 	if (_timestamp_rawPeImage == _timestamp_peSectionsHeaderList) {
-		qDebug() << "using cached peSectionsHeaderList"; 
+		//qDebug() << "using cached peSectionsHeaderList"; 
 		return peSectionsHeaderList;
 	}
 
