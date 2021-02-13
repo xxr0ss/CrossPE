@@ -3,3 +3,6 @@
 
 ## Build
 使用CMakeList.txt进行构建即可。
+
+## Feature
+* 使用Dock化的界面控件，方便按照需求进行布局。
