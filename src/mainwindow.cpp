@@ -1,4 +1,4 @@
-﻿#include "mainwindow.h"
+#include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
 
@@ -12,19 +12,19 @@ MainWindow::MainWindow(QWidget* parent)
 {
 	ui->setupUi(this);
 	this->setAcceptDrops(true);
+    createDockWindows();
+    
+    connect(this, SIGNAL(externalFilepathGot(QString)), dock_hp->widget(), SLOT(receiveFile(QString)));
+    connect(dock_hp->widget(), SIGNAL(requestForSectionsView()), this, SLOT(displaySectionsView()));
 
-	connect(ui->FilePathEdit, SIGNAL(editingFinished()), this, SLOT(setConfirmBtnEnabled())); // 手动输入完后，确认按钮能正确启用
-
-	PEManager* pemanager = PEManager::getPEManager();
-	connect(pemanager, SIGNAL(peImageMemoryReady()), this, SLOT(onPeImageMemoryReady()));
+    PEManager *manager = PEManager::getPEManager();
+    connect(manager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryStatus(bool)));
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
 }
-
-
 
 
 /*
@@ -40,119 +40,83 @@ void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 
 void MainWindow::dropEvent(QDropEvent* event)
 {
-	QList<QUrl> urls = event->mimeData()->urls();
-	if (urls.isEmpty())
-		return;
-	if (urls.count() > 1) {
-		QMessageBox::information(this, "Invalid Operation", "One file at a time!", QMessageBox::Ok);
-		return;
-	}
+     QList<QUrl> urls = event->mimeData()->urls();
+     if (urls.isEmpty())
+        return;
+     if (urls.count() > 1) {
+        QMessageBox::information(this, "Invalid Operation", "One file at a time!", QMessageBox::Ok);
+        return;
+     }
 
-	QUrl url = urls.first();
-	QString filepath = url.toLocalFile();   // 去掉url前面的"file://"
-	QLineEdit* le = ui->FilePathEdit;
-	qDebug() << filepath;
-
-	le->setText(filepath);
-	//ui->FilePathEdit->setDisabled(true);    // 设置禁止再编辑
-
-	emit(le->editingFinished());    // 避免还需要按回车才能启用确定按钮
-}
-
-
-
-/*
-* 文件处理
-*/
-
-/* 文件路径得到之后都设置下主界面的路径编辑框，再通过这个把文件打开，对PEManager进行数据填充*/
-void MainWindow::openFileByLineEditPath() {
-	qDebug() << "clicked confirm button";
-
-	QString filepath = ui->FilePathEdit->text();
-	qDebug() << "File path: " << filepath;
-
-	PEManager* pemanager = PEManager::getPEManager();
-	pemanager->fillPe(filepath);
-}
-
-
-
-/*
-* Slots of MainWindow class
-*/
-
-void MainWindow::setConfirmBtnEnabled()
-{
-	ui->ConfirmFileBtn->setEnabled(true);
-}
-
-
-void MainWindow::onPeImageMemoryReady()
-{
-	qDebug() << "peImageMemory ready, can now start analysing";
-	PEManager *manager = PEManager::getPEManager();
-
-	// display file info
-	int file_size = manager->getPeImageSize();
-	QString size;
-	if (file_size < 1024) {
-		size = QString::asprintf("%d B", file_size);
-	}
-	else if (file_size < 1024 * 1024) {
-		size = QString::asprintf("%d KB (%d bytes)", file_size >> 10, file_size);
-	}
-	else if (file_size < 1024 * 1024 * 1024) {
-		int kb = file_size % (1 << 20);
-		size = QString::asprintf("%.2f MB (%d bytes)", 
-			(file_size >> 20) + (double)kb / (double)(1 << 20), file_size);
-	}
-	else {
-		// TODO 实现精度更高的显示
-		size = QString::asprintf("%d GB", file_size >> 30);
-	}
-	
-	// display file size
-	ui->FileSizeLE->setEnabled(true);
-	ui->FileSizeLE->setText(size);
-
-	// display architecture info
-	ui->ArchLE->setEnabled(true);
-	ui->ArchLE->setText(manager->getMachineTypeName());
-
-	// display pe type (exe, dll, sys etc.)
-	ui->PEtypeLE->setEnabled(true);
-	ui->PEtypeLE->setText(manager->getPETypeName());
-
-    // enable sections view button
-    ui->sectionsView_bt->setEnabled(true);
-
-	// test getFo_IMAGE_OPTION_HEADER
-	DWORD opt_header_address = manager->getFo_IMAGE_OPTIONAL_HEADER();
+     QUrl url = urls.first();
+     QString filepath = url.toLocalFile();   // 去掉url前面的"file://"
+     emit externalFilepathGot(filepath);
 }
 
 /*
  * 菜单栏的处理逻辑
 */
-
 void MainWindow::on_actionOpen_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select a file");
-    qDebug() << "opened file through menu/open : " << filename;
+   QString filename = QFileDialog::getOpenFileName(this, "Select a file");
+   qDebug() << "opened file through menu/open : " << filename;
 
-    ui->FilePathEdit->setText(filename);
-    emit(ui->FilePathEdit->editingFinished());
+   emit externalFilepathGot(filename);
+}
+
+void MainWindow::on_actionSections_View_triggered()
+{
+    qDebug() << "action: Sections_View triggered";
+    displaySectionsView();
+}
+
+void MainWindow::onPeImageMemoryStatus(bool isReady)
+{
+    ui->menuPE->setEnabled(isReady);
+    ui->actionSections_View->setEnabled(isReady);
+}
+
+void MainWindow::displaySectionsView()
+{
+    qDebug() << "to display sections view";
+    if (dock_sv == nullptr) {
+        SectionsView* sv = new SectionsView();
+        dock_sv = new QDockWidget("Sections View", this);
+        dock_sv->setAllowedAreas(Qt::AllDockWidgetAreas);
+        dock_sv->setWidget(sv);
+    }
+
+    if (dock_hp->isVisible()) {
+        qDebug() << "dock_hp visible, will tabify docks";
+        dock_sv->setVisible(true);
+        tabifyDockWidget(dock_hp, dock_sv);
+    }
+    else {
+        addDockWidget(Qt::TopDockWidgetArea, dock_sv);
+    }
 }
 
 
-/*
- * 界面跳转
-*/
-
-void MainWindow::openSectionsView()
+void MainWindow::checkArgs()
 {
-    SectionsView *sv = new SectionsView();
-    sv->setAttribute(Qt::WA_DeleteOnClose);
-    sv->setWindowFlag(Qt::Window, true);
-    sv->show();
+    QStringList argv = QCoreApplication::arguments();
+    qDebug() << argv;
+    if (argv.length() > 1) {
+        emit externalFilepathGot(argv[1]);
+    }
+}
+
+void MainWindow::createDockWindows()
+{
+    if (dock_hp == nullptr) {
+        dock_hp = new QDockWidget("Homepage", this);
+        dock_hp->setAllowedAreas(Qt::AllDockWidgetAreas);
+        Homepage *hp = new Homepage(this);
+        dock_hp->setWidget(hp);
+        addDockWidget(Qt::TopDockWidgetArea, dock_hp);
+        ui->menuPE->addAction(dock_hp->toggleViewAction());
+    }
+    else {
+        addDockWidget(Qt::TopDockWidgetArea, dock_hp);
+    }
 }

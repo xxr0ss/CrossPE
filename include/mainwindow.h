@@ -3,8 +3,10 @@
 
 #include "PEManager.h"
 #include "sectionsview.h"
+#include "homepage.h"
 
 #include <QMainWindow>
+#include <qdockwidget.h>
 #include <qdrag.h>
 #include <qevent.h>
 #include <qpoint.h>
@@ -26,9 +28,8 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 signals:
-    void lineEditFilePathReady(); // TODO: 这个并没有被用到
+    void externalFilepathGot(QString filepath); // TODO: 增加一个枚举参数，可指定具体来源，方便细化程序行为表现
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -39,16 +40,22 @@ protected:
     void dropEvent(QDropEvent* event);
 
 private slots:
-    void openFileByLineEditPath();
-    void setConfirmBtnEnabled();
-    void onPeImageMemoryReady();
-
     void on_actionOpen_triggered();
+    void on_actionSections_View_triggered();
+    //void on_actionHomepage_triggered();
+    void onPeImageMemoryStatus(bool isReady);
 
-    void openSectionsView();
+    void displaySectionsView();
+
+private:
+    void checkArgs();
+    void createDockWindows();
 
 private:
     Ui::MainWindow *ui;
+
+    QDockWidget *dock_sv = nullptr;
+    QDockWidget *dock_hp = nullptr;
 };
 #endif // MAINWINDOW_H
 
