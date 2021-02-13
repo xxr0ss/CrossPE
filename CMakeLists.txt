@@ -21,10 +21,13 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 include_directories(${HEADER_DIR})
 FILE(GLOB HEADER_FILES "${HEADER_DIR}/*.h")
 FILE(GLOB SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
+FILE(GLOB UI_FILES "${SRC_DIR}/*.ui")
+
 
 set(PROJECT_SOURCES
         ${SRC_FILES}
         ${HEADER_FILES}
+        ${UI_FILES}
 )
 
 
