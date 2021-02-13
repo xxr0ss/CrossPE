@@ -54,8 +54,8 @@ private:
 private:
     Ui::MainWindow *ui;
 
-    SectionsView *sv = nullptr;
-    Homepage* hp = nullptr;
+    QDockWidget *dock_sv = nullptr;
+    QDockWidget *dock_hp = nullptr;
 };
 #endif // MAINWINDOW_H
 

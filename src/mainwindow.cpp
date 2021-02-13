@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget* parent)
 	this->setAcceptDrops(true);
     createDockWindows();
     
-    connect(this, SIGNAL(externalFilepathGot(QString)), hp, SLOT(receiveFile(QString)));
-    connect(hp, SIGNAL(requestForSectionsView()), this, SLOT(displaySectionsView()));
+    connect(this, SIGNAL(externalFilepathGot(QString)), dock_hp->widget(), SLOT(receiveFile(QString)));
+    connect(dock_hp->widget(), SIGNAL(requestForSectionsView()), this, SLOT(displaySectionsView()));
 
     PEManager *manager = PEManager::getPEManager();
     connect(manager, SIGNAL(peImageMemoryReady(bool)), this, SLOT(onPeImageMemoryStatus(bool)));
@@ -66,6 +66,7 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSections_View_triggered()
 {
+    qDebug() << "action: Sections_View triggered";
     displaySectionsView();
 }
 
@@ -77,15 +78,22 @@ void MainWindow::onPeImageMemoryStatus(bool isReady)
 
 void MainWindow::displaySectionsView()
 {
-    if (sv == nullptr) {
-        qDebug() << "using new sections view";
-        sv = new SectionsView();
+    qDebug() << "to display sections view";
+    if (dock_sv == nullptr) {
+        SectionsView* sv = new SectionsView();
+        dock_sv = new QDockWidget("Sections View", this);
+        dock_sv->setAllowedAreas(Qt::AllDockWidgetAreas);
+        dock_sv->setWidget(sv);
+    }
+
+    if (dock_hp->isVisible()) {
+        qDebug() << "dock_hp visible, will tabify docks";
+        dock_sv->setVisible(true);
+        tabifyDockWidget(dock_hp, dock_sv);
     }
     else {
-        sv->setWindowFlag(Qt::Window, true);
-        qDebug() << "using cached sections view";
+        addDockWidget(Qt::TopDockWidgetArea, dock_sv);
     }
-    sv->show();
 }
 
 
@@ -100,10 +108,15 @@ void MainWindow::checkArgs()
 
 void MainWindow::createDockWindows()
 {
-    QDockWidget* dock = new QDockWidget("Homepage", this);
-    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
-    hp = new Homepage(this);
-    dock->setWidget(hp);
-    addDockWidget(Qt::TopDockWidgetArea, dock);
-    ui->menuPE->addAction(dock->toggleViewAction());
+    if (dock_hp == nullptr) {
+        dock_hp = new QDockWidget("Homepage", this);
+        dock_hp->setAllowedAreas(Qt::AllDockWidgetAreas);
+        Homepage *hp = new Homepage(this);
+        dock_hp->setWidget(hp);
+        addDockWidget(Qt::TopDockWidgetArea, dock_hp);
+        ui->menuPE->addAction(dock_hp->toggleViewAction());
+    }
+    else {
+        addDockWidget(Qt::TopDockWidgetArea, dock_hp);
+    }
 }
