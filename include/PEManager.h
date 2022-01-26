@@ -31,7 +31,7 @@ private:
 	static PEManager* _instance;
 
 private:
-	BYTE* _rawPeImage = NULL; // 提供时间戳缓存机制，每次重新获取比较麻烦的数据可以利用缓存
+	BYTE* _rawPeImage = nullptr; // 提供时间戳缓存机制，每次重新获取比较麻烦的数据可以利用缓存
 	qint64 _timestamp_rawPeImage = 0;
 
 	int peImageSize = 0;

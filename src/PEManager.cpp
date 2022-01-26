@@ -28,20 +28,20 @@ PEManager::~PEManager()
 }
 
 
-bool PEManager::isPeReady() { return _rawPeImage != NULL; }
+bool PEManager::isPeReady() { return _rawPeImage != nullptr; }
 
 void PEManager::fillPe(const QString filepath)
 {
 	QFile file(filepath);
 	if (!file.open(QIODevice::ReadOnly)) {
-		QMessageBox::information(NULL, "File Error", "Cannot open file", QMessageBox::Ok);
+		QMessageBox::information(nullptr, "File Error", "Cannot open file", QMessageBox::Ok);
 		return;
 	}
 
 	QByteArray bytes = file.read(2);
 	char MZ[2] = { 'M', 'Z' };
 	if (!bytes.startsWith(MZ)) {
-		QMessageBox::StandardButton button = QMessageBox::question(NULL,
+		QMessageBox::StandardButton button = QMessageBox::question(nullptr,
 			"Might not PE", "Not begin with \"MZ\", continue?",
 			QMessageBox::Yes | QMessageBox::Cancel);
 		if (QMessageBox::Cancel == button) {
@@ -62,13 +62,13 @@ void PEManager::fillPe(const QString filepath)
 void PEManager::fillRawPeImage(QByteArray bytesArr) {
     emit peImageMemoryReady(false);
 	peImageSize = bytesArr.size();
-	if (_rawPeImage != NULL) {
+	if (_rawPeImage != nullptr) {
 		// 考虑到之前还可能有打开过别的PE文件，所以这里有必要清理内存
 		free(_rawPeImage);
 	}
 	_rawPeImage = (BYTE*)malloc(sizeof(BYTE) * bytesArr.size());
-	if (_rawPeImage == NULL) {
-		QMessageBox::critical(NULL,
+	if (_rawPeImage == nullptr) {
+		QMessageBox::critical(nullptr,
 			"Fatal Error", "Cannot read pe file into memory: allocate memory failed",
 			QMessageBox::Ok);
 		return;
